@@ -65,7 +65,7 @@
 <meta property="og:site_name" content="Lost Little Attic">
 <meta property="og:description" content="做为一个刚刚入门RxJava的种子型选手，目前也就是掌握了RxJava的一些常用操作符，以及知道一些不常用但在某些场景下有用的操作符。然而，这是远远不够滴^_^
 在开始学习RxJava的时候，只知道使用一系列的操作符链起来，就可以进行相当于流程式的操作，也知道当调用了subscribe的时候Observable里的OnSubscriber的call方法会执行，but why？它们之间到底是什么关系">
-<meta property="og:updated_time" content="2016-03-27T10:27:48.000Z">
+<meta property="og:updated_time" content="2016-03-27T12:00:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="简单的理解一下RxJava中的lift">
 <meta name="twitter:description" content="做为一个刚刚入门RxJava的种子型选手，目前也就是掌握了RxJava的一些常用操作符，以及知道一些不常用但在某些场景下有用的操作符。然而，这是远远不够滴^_^
@@ -159,12 +159,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
-            归档
+            分类
           </a>
         </li>
       
@@ -175,6 +175,26 @@
               <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
           </a>
         </li>
       
@@ -234,6 +254,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -259,6 +298,7 @@
 <p>在开始学习RxJava的时候，只知道使用一系列的操作符链起来，就可以进行相当于流程式的操作，也知道当调用了<code>subscribe</code>的时候<code>Observable</code>里的<code>OnSubscriber</code>的<code>call</code>方法会执行，but why？它们之间到底是什么关系？其实才开始学的时候也问过自己这个问题，但是怕一开始就挑战这么深入的东西反倒不利于自己学习（说到底就是怂了）。</p>
 <p>废话够多了，切入正题。</p>
 <p>今天就以一个简单的例子，简单的分析一下从<code>Observable</code>创建到<code>Observer</code>监听到并执行的过程。</p>
+<a id="more"></a>
 <p>先做点准备：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Observable.OnSubscribe&lt;String&gt; onSubscribe = <span class="keyword">new</span> Observable.OnSubscribe&lt;String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> String&gt; subscriber)</span> </span>&#123;</span><br><span class="line">        subscriber.onNext(<span class="string">"hello"</span>);</span><br><span class="line">        subscriber.onCompleted();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">        </span><br><span class="line">Func1&lt;String, Integer&gt; mapTrans = <span class="keyword">new</span> Func1&lt;String, Integer&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> s.length();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">        </span><br><span class="line">Action1&lt;Integer&gt; subscriber = <span class="keyword">new</span> Action1&lt;Integer&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Integer integer)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"[subscribe] integer="</span> + integer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <p>在上面我准备了3个对象（程序要找对象不用相亲，自己new一个就可以了），接着就是使用它们了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Observable&lt;String&gt; observable1 = Observable.create(onSubscribe);</span><br><span class="line">Observable&lt;Integer&gt; observable2 = observable1.map(mapTrans);</span><br><span class="line">observable2.subscribe(subscriber);</span><br></pre></td></tr></table></figure></p>
 <p>当然上面的代码标准的写法是写成链式的，像下面<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Observable.create(onSubscribe)</span><br><span class="line">          .map(mapTrans)</span><br><span class="line">          .subscribe(subscriber);</span><br></pre></td></tr></table></figure></p>
@@ -331,6 +371,29 @@
 
     <div class="post-spread">
       
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
     </div>
   </div>
 
@@ -390,11 +453,18 @@
           </div>
 
           
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -157,12 +157,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
-            归档
+            分类
           </a>
         </li>
       
@@ -173,6 +173,26 @@
               <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
           </a>
         </li>
       
@@ -235,6 +255,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -257,41 +296,15 @@
 
       
         
-          
-            <p>做为一个刚刚入门RxJava的种子型选手，目前也就是掌握了RxJava的一些常用操作符，以及知道一些不常用但在某些场景下有用的操作符。然而，这是远远不够滴^_^</p>
+          <p>做为一个刚刚入门RxJava的种子型选手，目前也就是掌握了RxJava的一些常用操作符，以及知道一些不常用但在某些场景下有用的操作符。然而，这是远远不够滴^_^</p>
 <p>在开始学习RxJava的时候，只知道使用一系列的操作符链起来，就可以进行相当于流程式的操作，也知道当调用了<code>subscribe</code>的时候<code>Observable</code>里的<code>OnSubscriber</code>的<code>call</code>方法会执行，but why？它们之间到底是什么关系？其实才开始学的时候也问过自己这个问题，但是怕一开始就挑战这么深入的东西反倒不利于自己学习（说到底就是怂了）。</p>
 <p>废话够多了，切入正题。</p>
 <p>今天就以一个简单的例子，简单的分析一下从<code>Observable</code>创建到<code>Observer</code>监听到并执行的过程。</p>
-<p>先做点准备：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Observable.OnSubscribe&lt;String&gt; onSubscribe = <span class="keyword">new</span> Observable.OnSubscribe&lt;String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> String&gt; subscriber)</span> </span>&#123;</span><br><span class="line">        subscriber.onNext(<span class="string">"hello"</span>);</span><br><span class="line">        subscriber.onCompleted();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">        </span><br><span class="line">Func1&lt;String, Integer&gt; mapTrans = <span class="keyword">new</span> Func1&lt;String, Integer&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> s.length();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">        </span><br><span class="line">Action1&lt;Integer&gt; subscriber = <span class="keyword">new</span> Action1&lt;Integer&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Integer integer)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"[subscribe] integer="</span> + integer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>在上面我准备了3个对象（程序要找对象不用相亲，自己new一个就可以了），接着就是使用它们了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Observable&lt;String&gt; observable1 = Observable.create(onSubscribe);</span><br><span class="line">Observable&lt;Integer&gt; observable2 = observable1.map(mapTrans);</span><br><span class="line">observable2.subscribe(subscriber);</span><br></pre></td></tr></table></figure></p>
-<p>当然上面的代码标准的写法是写成链式的，像下面<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Observable.create(onSubscribe)</span><br><span class="line">          .map(mapTrans)</span><br><span class="line">          .subscribe(subscriber);</span><br></pre></td></tr></table></figure></p>
-<p>不过这样的话不利于我们理解它每一步做了什么，接下来就来分析一下吧。</p>
-<ul>
-<li>首先，我们把<code>onSubscribe</code>对象传给了<code>observable1</code>，通过源码来看</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Observable&lt;T&gt; <span class="title">create</span><span class="params">(OnSubscribe&lt;T&gt; f)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Observable&lt;T&gt;(hook.onCreate(f));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">Observable</span><span class="params">(OnSubscribe&lt;T&gt; f)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.onSubscribe = f;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，它new了一个<code>Observable</code>对象，也就是<code>observable1</code>，并且把我们传入的<code>onSubscribe</code>对象作为了自己的成员变量，为了与后面的区分，我们把<code>observable1</code>的成员变量<code>onSubscribe</code>记作<code>onSubscribe1</code>。</p>
-<ul>
-<li>接着，我们在<code>observable1</code>对象上使用了<code>map</code>操作符，它做了什么呢？</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> &lt;R&gt; <span class="function">Observable&lt;R&gt; <span class="title">map</span><span class="params">(Func1&lt;? <span class="keyword">super</span> T, ? extends R&gt; func)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> lift(<span class="keyword">new</span> OperatorMap&lt;T, R&gt;(func));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，它用我们传入的<code>mapTrans</code>new了一个<code>OperatorMap</code>对象，至于<code>OperatorMap</code>是个什么鬼我们先不管它，想知道的话就看一下源码或者网上搜一下，什么都有了。这里我们主要看看<code>lift</code>，它做了什么呢?</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> &lt;R&gt; <span class="function">Observable&lt;R&gt; <span class="title">lift</span><span class="params">(<span class="keyword">final</span> Operator&lt;? extends R, ? <span class="keyword">super</span> T&gt; operator)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Observable&lt;R&gt;(<span class="keyword">new</span> OnSubscribe&lt;R&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> R&gt; o)</span> </span>&#123;</span><br><span class="line">            ......</span><br><span class="line">            Subscriber&lt;? <span class="keyword">super</span> T&gt; st = hook.onLift(operator).call(o);</span><br><span class="line">            st.onStart();</span><br><span class="line">            onSubscribe.call(st);</span><br><span class="line">            ......</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，<code>lift</code>方法也是new了一个<code>Observable</code>对象，其实就是我们的<code>observable2</code>，和<code>observable1</code>一样，它还new了一个<code>OnSubscribe</code>对象传给了<code>observable2</code>，我们把它记作<code>onSubscribe2</code>吧。那么，关键就来了，这个<code>onSubscribe2</code>对象的<code>call</code>方法，它做了什么？<br>可以看到，它通过参数<code>operator</code>也就是我们的<code>mapTrans</code>并调用它的<code>call</code>方法返回了一个<code>Subscriber</code>对象，然后，重点是然后，它调用了<code>onSubscribe</code>的<code>call</code>方法，而这个<code>onSubscribe</code>对象是谁的呢？明显是<code>observable1</code>的，也就是<code>onSubscribe1</code>，好像有点点晕了…先不管，再看看下个流程</p>
-<ul>
-<li>最后，调用了<code>subscribe</code>方法，具体点实际上是<code>observable2</code>的<code>subscribe</code>方法，看源码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里调用了又调用了内部的subscribe方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Subscription <span class="title">subscribe</span><span class="params">(<span class="keyword">final</span> Action1&lt;? <span class="keyword">super</span> T&gt; onNext)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (onNext == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"onNext can not be null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> subscribe(<span class="keyword">new</span> Subscriber&lt;T&gt;() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// do nothing</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> OnErrorNotImplementedException(e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(T args)</span> </span>&#123;</span><br><span class="line">            onNext.call(args);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 又调用了Observable类的静态方法subscribe，这里的this就是我们的observable2</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Subscription <span class="title">subscribe</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> T&gt; subscriber)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Observable.subscribe(subscriber, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 代码有点多，就只看关键的</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Subscription <span class="title">subscribe</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> T&gt; subscriber, Observable&lt;T&gt; observable)</span> </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">    hook.onSubscribeStart(observable, observable.onSubscribe).call(subscriber);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，当我们在外面调用了subscribe方法后，最后是调用到了Observable类的静态subscribe方法。这里个人认为有两重要的地方，一个是<code>subscribe(Subscribe)</code>方法，它里面把<code>this</code>传给了静态方法<code>subscribe</code>，而这里的<code>this</code>，就是我们的<code>observabel2</code>，另一个重要的地方就是<code>hook.onSubscribeStart(observable, observable.onSubscribe).call(subscriber)</code>这句话，从源码来看</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">OnSubscribe&lt;T&gt; <span class="title">onSubscribeStart</span><span class="params">(Observable&lt;? extends T&gt; observableInstance, <span class="keyword">final</span> OnSubscribe&lt;T&gt; onSubscribe)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// pass-thru by default</span></span><br><span class="line">    <span class="keyword">return</span> onSubscribe;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个方法返回的就是传入的参数<code>onSubscribe</code>，也就是我们的<code>onSubscribe2</code>对象，所以实际上，这里就是调用了<code>onSubscribe2</code>对象的<code>call</code>方法，并把我们的<code>subscriber</code>传给了它，这里的<code>subscirber</code>就是<code>lift</code>中的参数<code>o</code>，源码如下（和上面一样的）。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> &lt;R&gt; <span class="function">Observable&lt;R&gt; <span class="title">lift</span><span class="params">(<span class="keyword">final</span> Operator&lt;? extends R, ? <span class="keyword">super</span> T&gt; operator)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Observable&lt;R&gt;(<span class="keyword">new</span> OnSubscribe&lt;R&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> R&gt; o)</span> </span>&#123;</span><br><span class="line">            ......</span><br><span class="line">            Subscriber&lt;? <span class="keyword">super</span> T&gt; st = hook.onLift(operator).call(o);</span><br><span class="line">            st.onStart();</span><br><span class="line">            onSubscribe.call(st);</span><br><span class="line">            ......</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而我们刚才已经分析了，这里的<code>onSubscribe</code>对象实际上就是<code>observable1</code>持有的成员<code>onSubscribe1</code>对象。</p>
-<p>所以最终的结果就是，我们在外面调用了<code>subscribe</code>方法后，又一层层住上，调用到了最上层<code>observabe.onSubscribe</code>对象的call方法。至此，我们算是把在一个简单的流程中，<code>Observable</code>怎么开始的就分析完了。</p>
-<p>那么<code>map</code>操作符是怎么改<code>observable1</code>传出来的值的呢？<br>针对<code>map</code>我们来看，还是<code>hook.onLift(operator).call(o)</code>这句，还有印象的话，这里的<code>operator</code>，就是通过我们的<code>mapTrans</code>创建出来的<code>OperatorMap</code>对象，这里调用了它的<code>call</code>方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// OperatorMap.java</span></span><br><span class="line"><span class="keyword">public</span> Subscriber&lt;? <span class="keyword">super</span> T&gt; call(<span class="keyword">final</span> Subscriber&lt;? <span class="keyword">super</span> R&gt; o) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Subscriber&lt;T&gt;(o) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            o.onCompleted();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line">            o.onError(e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                o.onNext(transformer.call(t));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">                Exceptions.throwOrReport(e, <span class="keyword">this</span>, t);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这里的<code>o</code>，就是我们最后调用<code>subscribe</code>时传入的<code>Subscribe</code>对象，可以看到<code>o.onNext(transformer.call(t))</code>，它在<code>onNext</code>方法中调用了我们的<code>mapTrans</code>的<code>call方法</code>。<br><code>Subscriber&lt;? super T&gt; st = hook.onLift(operator).call(o)</code>这句把我们最后的<code>subscriber</code>封装了一层，变成了<code>st</code>，这样一层层封装，最后传给了最上层的<code>observable</code>对象，最上层的<code>observable</code>对象最后调用到封装后的<code>onSubscribe</code>对象的方法，又一层层执行下来…也是够复杂的。</p>
-<p>理解了的话还是好理解，改天整两张图可能会更直观点吧。</p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/27/简单的理解一下RxJava中的lift/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -354,6 +367,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -449,11 +481,18 @@
           </div>
 
           
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
