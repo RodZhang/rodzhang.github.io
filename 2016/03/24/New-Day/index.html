@@ -753,7 +753,7 @@ function showTotal(Counter) {
                 
                 var total = 0;
 				for (var i = 0; i < results.length; i++) {
-                    total += results.get('time');
+                    total += results[i].get('time');
 				}
                 var content = $(document.getElementById(url)).text() + " " + total;
                 $(document.getElementById(url)).text(content);
