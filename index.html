@@ -299,8 +299,8 @@
 
       
         
-          <p>做为一个刚刚入门RxJava的种子型选手，目前也就是掌握了RxJava的一些常用操作符，以及知道一些不常用但在某些场景下有用的操作符。然而，这是远远不够滴^_^</p>
-<p>在开始学习RxJava的时候，只知道使用一系列的操作符链起来，就可以进行相当于流程式的操作，也知道当调用了<code>subscribe</code>的时候<code>Observable</code>里的<code>OnSubscriber</code>的<code>call</code>方法会执行，but why？它们之间到底是什么关系？其实才开始学的时候也问过自己这个问题，但是怕一开始就挑战这么深入的东西反倒不利于自己学习（说到底就是怂了）。</p>
+          <h3 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h3><p>做为一个刚刚入门RxJava的种子型选手，目前也就是掌握了RxJava的一些常用操作符，以及知道一些不常用但在某些场景下有用的操作符。然而，这是远远不够滴^_^</p>
+<p>在开始学习RxJava的时候，只知道使用一系列的操作符链起来，就可以进行链式操作，也知道当调用了<code>subscribe</code>的时候<code>Observable</code>里的<code>OnSubscriber</code>的<code>call</code>方法会执行，but why？它们之间到底是什么关系？其实才开始学的时候也问过自己这个问题，但是怕一开始就挑战这么深入的东西反倒不利于自己学习（说到底就是怂了）。</p>
 <p>废话够多了，切入正题。</p>
 <p>今天就以一个简单的例子，简单的分析一下从<code>Observable</code>创建到<code>Observer</code>监听到并执行的过程。</p>
           <div class="post-more-link text-center">
