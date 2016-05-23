@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="读书笔记, Effective Java, Java," />
 
 
 
@@ -57,16 +57,19 @@
 
 
 
-<meta name="description" content="I want to start my bolg, fighting!">
+<meta name="description" content="看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：AbstractInterface，在Effective Java中也叫它Skeletal Implementation(骨架实现)。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="New Day">
-<meta property="og:url" content="http://yoursite.com/2016/03/24/New-Day/index.html">
+<meta property="og:title" content="关于AbstractInterface(骨架实现)">
+<meta property="og:url" content="http://yoursite.com/2016/05/23/关于AbstractInterface/index.html">
 <meta property="og:site_name" content="Lost Little Attic">
-<meta property="og:description" content="I want to start my bolg, fighting!">
-<meta property="og:updated_time" content="2016-03-27T11:55:29.000Z">
+<meta property="og:description" content="看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：AbstractInterface，在Effective Java中也叫它Skeletal Implementation(骨架实现)。">
+<meta property="og:image" content="http://yoursite.com/../images/AbstractInterface_before.png">
+<meta property="og:image" content="http://yoursite.com/../images/AbstractInterface_after.png">
+<meta property="og:updated_time" content="2016-05-23T16:23:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="New Day">
-<meta name="twitter:description" content="I want to start my bolg, fighting!">
+<meta name="twitter:title" content="关于AbstractInterface(骨架实现)">
+<meta name="twitter:description" content="看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：AbstractInterface，在Effective Java中也叫它Skeletal Implementation(骨架实现)。">
+<meta name="twitter:image" content="http://yoursite.com/../images/AbstractInterface_before.png">
 
 
 
@@ -84,7 +87,7 @@
   };
 </script>
 
-  <title> New Day | Lost Little Attic </title>
+  <title> 关于AbstractInterface(骨架实现) | Lost Little Attic </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -233,7 +236,7 @@
             
             
               
-                New Day
+                关于AbstractInterface(骨架实现)
               
             
           </h1>
@@ -245,38 +248,19 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-24T00:21:08+08:00" content="2016-03-24">
-              2016-03-24
+            <time itemprop="dateCreated" datetime="2016-05-23T23:42:10+08:00" content="2016-05-23">
+              2016-05-23
             </time>
           </span>
 
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">杂谈</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/24/New-Day/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/24/New-Day/" itemprop="commentsCount"></span>
+                <a href="/2016/05/23/关于AbstractInterface/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/关于AbstractInterface/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -286,7 +270,7 @@
 
           
           
-      	    <span id="/2016/03/24/New-Day/"class="leancloud_visitors"  data-flag-title="New Day">&nbsp; | &nbsp;阅读次数
+      	    <span id="/2016/05/23/关于AbstractInterface/"class="leancloud_visitors"  data-flag-title="关于AbstractInterface(骨架实现)">&nbsp; | &nbsp;阅读次数
             </span>
           
 
@@ -301,7 +285,21 @@
       
 
       
-        <h3 id="I-want-to-start-my-bolg-fighting"><a href="#I-want-to-start-my-bolg-fighting" class="headerlink" title="I want to start my bolg, fighting!"></a>I want to start my bolg, fighting!</h3>
+        <p>看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。<br>这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：<code>AbstractInterface</code>，在Effective Java中也叫它<code>Skeletal Implementation</code>(骨架实现)。</p>
+<a id="more"></a>
+<p>我们都知道接口与抽象类的区别之一，就是接口只能定义方法，而抽象类不但可以定义方法，还可以包含具体的实现。那假如说我又想使用接口，又想让它有一个公用的实现，怎么整呢？这时候就到<code>AbstractInterface</code>闪亮全场了。</p>
+<p>现在假设是这种情况，有一个接口叫做Bird，它定义了一个方法fly。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Bird</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在来了燕子（Swallow），燕子嘛，本来就是鸟，这里让它实现Bird这个接口。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swallow</span> <span class="keyword">implements</span> <span class="title">Bird</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I'm a bird, fly with two wings"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>后来又来了乌鸦（Crow），同理让它实现Bird接口<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Crow</span> <span class="keyword">implements</span> <span class="title">Bird</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I'm a bird, fly with two wings"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结构为：</p>
+<p><img src="../images/AbstractInterface_before.png" alt="AbstractInterface Before"></p>
+<p>可以发现，它们实现的内容是完全一样的，我就姑且认为所有鸟的fly方法都是一样的吧，如果每种鸟都是用实现Bird接口的方式，这是相当不好，万一哪天鸟类集体进化了，有3个翅膀来飞了，修改所有鸟的fly方法可不是一件轻松的事。<br>终于主角要登场了，是的，我们可以加入抽象类<code>AbstractBird</code>，让它实现<code>Bird</code>接口，并且为所有鸟类提供一个公用的fly方法。现在的结构就变成了这样<br><img src="../images/AbstractInterface_after.png" alt="AbstractInterface After"></p>
+<p>这个<code>AbstractBird</code>就是一个骨架实现。<br>首先要强调一点是，骨架实现类是为了继承的目的而设计的，<br>那么这样做有什么好处？</p>
+<ol>
+<li>因为使用的骨架实现，子类共有的方法可以由基类简单实现；</li>
+<li>假如有一天<code>Bird</code>接口变更了，所有鸟类都掌握了一项新技能：悬停。我们可以不用为所有鸟类都加上这个方法，只需要让<code>AbstractBird</code>实现这个方法，其子类自然也就有了这个功能了。也就是说它可以在一定程度上减少接口变更带来的影响。</li>
+</ol>
+
       
     </div>
 
@@ -313,18 +311,24 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/读书笔记-Effective-Java-Java/" rel="tag">#读书笔记, Effective Java, Java</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/03/27/简单的理解一下RxJava中的lift/" rel="next" title="简单的理解一下RxJava中的lift">
+                <i class="fa fa-chevron-left"></i> 简单的理解一下RxJava中的lift
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/27/简单的理解一下RxJava中的lift/" rel="prev" title="简单的理解一下RxJava中的lift">
-                简单的理解一下RxJava中的lift <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -373,8 +377,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/24/New-Day/"
-           data-title="New Day" data-url="http://yoursite.com/2016/03/24/New-Day/">
+      <div class="ds-thread" data-thread-key="2016/05/23/关于AbstractInterface/"
+           data-title="关于AbstractInterface(骨架实现)" data-url="http://yoursite.com/2016/05/23/关于AbstractInterface/">
       </div>
     
   </div>
@@ -470,7 +474,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-want-to-start-my-bolg-fighting"><span class="nav-number">1.</span> <span class="nav-text">I want to start my bolg, fighting!</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
