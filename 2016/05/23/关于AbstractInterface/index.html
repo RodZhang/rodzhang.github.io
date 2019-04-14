@@ -6,19 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -27,7 +23,11 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -36,39 +36,41 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Effective Java,Java," />
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Effective Java,Java,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0">
 
 
 
 
 
 
-<meta name="description" content="&amp;#x770B;&amp;#x4E86;Effective Java&amp;#x7684;&amp;#x7B2C;&amp;#x5341;&amp;#x516B;&amp;#x6761;&amp;#x63A5;&amp;#x53E3;&amp;#x4F18;&amp;#x5148;&amp;#x62BD;&amp;#x8C61;&amp;#x7C7B;&amp;#xFF0C;&amp;#x5176;&amp;#x4E2D;&amp;#x5BF9;&amp;#x62BD;&amp;#x8C61;&amp;#x7C7B;&amp;#x4E0E;&amp;#x63A5;&amp;#">
+<meta name="description" content="看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：AbstractInterface，在Effective Java中也叫它Skeletal Implementation(骨架实现)。">
+<meta name="keywords" content="Effective Java,Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于AbstractInterface(骨架实现)">
 <meta property="og:url" content="http://yoursite.com/2016/05/23/关于AbstractInterface/index.html">
 <meta property="og:site_name" content="Lost Little Attic">
-<meta property="og:description" content="&amp;#x770B;&amp;#x4E86;Effective Java&amp;#x7684;&amp;#x7B2C;&amp;#x5341;&amp;#x516B;&amp;#x6761;&amp;#x63A5;&amp;#x53E3;&amp;#x4F18;&amp;#x5148;&amp;#x62BD;&amp;#x8C61;&amp;#x7C7B;&amp;#xFF0C;&amp;#x5176;&amp;#x4E2D;&amp;#x5BF9;&amp;#x62BD;&amp;#x8C61;&amp;#x7C7B;&amp;#x4E0E;&amp;#x63A5;&amp;#">
+<meta property="og:description" content="看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：AbstractInterface，在Effective Java中也叫它Skeletal Implementation(骨架实现)。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2016/05/23/关于AbstractInterface/AbstractInterface_before.png">
 <meta property="og:image" content="http://yoursite.com/2016/05/23/关于AbstractInterface/AbstractInterface_after.png">
 <meta property="og:updated_time" content="2016-05-24T03:01:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于AbstractInterface(骨架实现)">
-<meta name="twitter:description" content="&amp;#x770B;&amp;#x4E86;Effective Java&amp;#x7684;&amp;#x7B2C;&amp;#x5341;&amp;#x516B;&amp;#x6761;&amp;#x63A5;&amp;#x53E3;&amp;#x4F18;&amp;#x5148;&amp;#x62BD;&amp;#x8C61;&amp;#x7C7B;&amp;#xFF0C;&amp;#x5176;&amp;#x4E2D;&amp;#x5BF9;&amp;#x62BD;&amp;#x8C61;&amp;#x7C7B;&amp;#x4E0E;&amp;#x63A5;&amp;#">
+<meta name="twitter:description" content="看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：AbstractInterface，在Effective Java中也叫它Skeletal Implementation(骨架实现)。">
 <meta name="twitter:image" content="http://yoursite.com/2016/05/23/关于AbstractInterface/AbstractInterface_before.png">
 
 
@@ -125,7 +127,7 @@
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">Lost Little Attic</span>
       <span class="logo-line-after"><i></i></span>
@@ -152,7 +154,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br>
             
             首页
           </a>
@@ -162,7 +164,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
             
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br>
             
             分类
           </a>
@@ -172,7 +174,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br>
             
             标签
           </a>
@@ -182,7 +184,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br>
             
             归档
           </a>
@@ -192,7 +194,7 @@
         <li class="menu-item menu-item-commonweal">
           <a href="/404.html" rel="section">
             
-              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br>
             
             公益404
           </a>
@@ -254,7 +256,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -289,7 +291,7 @@
 
           
           
-      	    <span id="/2016/05/23/关于AbstractInterface/"class="leancloud_visitors"  data-flag-title="关于AbstractInterface(骨架实现)">&nbsp; | &nbsp;阅读次数
+      	    <span id="/2016/05/23/关于AbstractInterface/" class="leancloud_visitors" data-flag-title="关于AbstractInterface(骨架实现)">&nbsp; | &nbsp;阅读次数
             </span>
           
 
@@ -304,19 +306,19 @@
       
 
       
-        <p>&#x770B;&#x4E86;Effective Java&#x7684;&#x7B2C;&#x5341;&#x516B;&#x6761;&#x63A5;&#x53E3;&#x4F18;&#x5148;&#x62BD;&#x8C61;&#x7C7B;&#xFF0C;&#x5176;&#x4E2D;&#x5BF9;&#x62BD;&#x8C61;&#x7C7B;&#x4E0E;&#x63A5;&#x53E3;&#x7684;&#x533A;&#x522B;&#xFF0C;&#x4EE5;&#x53CA;&#x4E3A;&#x4EC0;&#x4E48;&#x63A5;&#x53E3;&#x4F18;&#x5148;&#x4E8E;&#x62BD;&#x8C61;&#x7C7B;&#x505A;&#x4E86;&#x6BD4;&#x8F83;&#x6DF1;&#x5165;&#x7684;&#x8BF4;&#x660E;&#x3002;<br>&#x8FD9;&#x91CC;&#x6211;&#x5B66;&#x4E60;&#x5230;&#x4E86;&#x4E00;&#x4E2A;&#x5BF9;&#x6211;&#x6765;&#x8BF4;&#x65B0;&#x7684;&#x6982;&#x5FF5;&#xFF0C;&#x53EF;&#x80FD;&#x6709;&#x5F88;&#x591A;&#x4EBA;&#x7528;&#x8FC7;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x77E5;&#x9053;&#x5B83;&#x539F;&#x6765;&#x662F;&#x6709;&#x8FD9;&#x4E48;&#x4E00;&#x4E2A;&#x8BF4;&#x6CD5;&#x3002;&#x5B83;&#x5C31;&#x662F;&#x4ECA;&#x5929;&#x7684;&#x4E3B;&#x89D2;&#xFF1A;<code>AbstractInterface</code>&#xFF0C;&#x5728;Effective Java&#x4E2D;&#x4E5F;&#x53EB;&#x5B83;<code>Skeletal Implementation</code>(&#x9AA8;&#x67B6;&#x5B9E;&#x73B0;)&#x3002;</p>
+        <p>看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。<br>这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：<code>AbstractInterface</code>，在Effective Java中也叫它<code>Skeletal Implementation</code>(骨架实现)。</p>
 <a id="more"></a>
-<p>&#x6211;&#x4EEC;&#x90FD;&#x77E5;&#x9053;&#x63A5;&#x53E3;&#x4E0E;&#x62BD;&#x8C61;&#x7C7B;&#x7684;&#x533A;&#x522B;&#x4E4B;&#x4E00;&#xFF0C;&#x5C31;&#x662F;&#x63A5;&#x53E3;&#x53EA;&#x80FD;&#x5B9A;&#x4E49;&#x65B9;&#x6CD5;&#xFF0C;&#x800C;&#x62BD;&#x8C61;&#x7C7B;&#x4E0D;&#x4F46;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x65B9;&#x6CD5;&#xFF0C;&#x8FD8;&#x53EF;&#x4EE5;&#x5305;&#x542B;&#x5177;&#x4F53;&#x7684;&#x5B9E;&#x73B0;&#x3002;&#x90A3;&#x5047;&#x5982;&#x8BF4;&#x6211;&#x53C8;&#x60F3;&#x4F7F;&#x7528;&#x63A5;&#x53E3;&#xFF0C;&#x53C8;&#x60F3;&#x8BA9;&#x5B83;&#x6709;&#x4E00;&#x4E2A;&#x516C;&#x7528;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x600E;&#x4E48;&#x6574;&#x5462;&#xFF1F;&#x8FD9;&#x65F6;&#x5019;&#x5C31;&#x5230;<code>AbstractInterface</code>&#x95EA;&#x4EAE;&#x5168;&#x573A;&#x4E86;&#x3002;</p>
-<p>&#x73B0;&#x5728;&#x5047;&#x8BBE;&#x662F;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#xFF0C;&#x6709;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x53EB;&#x505A;Bird&#xFF0C;&#x5B83;&#x5B9A;&#x4E49;&#x4E86;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;fly&#x3002;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Bird</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span></span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
-<p>&#x73B0;&#x5728;&#x6765;&#x4E86;&#x71D5;&#x5B50;&#xFF08;Swallow&#xFF09;&#xFF0C;&#x71D5;&#x5B50;&#x561B;&#xFF0C;&#x672C;&#x6765;&#x5C31;&#x662F;&#x9E1F;&#xFF0C;&#x8FD9;&#x91CC;&#x8BA9;&#x5B83;&#x5B9E;&#x73B0;Bird&#x8FD9;&#x4E2A;&#x63A5;&#x53E3;&#x3002;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swallow</span> <span class="keyword">implements</span> <span class="title">Bird</span> </span>{</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span> </span>{</span><br><span class="line">        System.out.println(<span class="string">&quot;I&apos;m a bird, fly with two wings&quot;</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
-<p>&#x540E;&#x6765;&#x53C8;&#x6765;&#x4E86;&#x4E4C;&#x9E26;&#xFF08;Crow&#xFF09;&#xFF0C;&#x540C;&#x7406;&#x8BA9;&#x5B83;&#x5B9E;&#x73B0;Bird&#x63A5;&#x53E3;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Crow</span> <span class="keyword">implements</span> <span class="title">Bird</span> </span>{</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span> </span>{</span><br><span class="line">        System.out.println(<span class="string">&quot;I&apos;m a bird, fly with two wings&quot;</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
-<p>&#x7ED3;&#x6784;&#x4E3A;&#xFF1A;</p>
-<p><img src="/2016/05/23/&#x5173;&#x4E8E;AbstractInterface/AbstractInterface_before.png" alt="AbstractInterface Before"></p>
-<p>&#x53EF;&#x4EE5;&#x53D1;&#x73B0;&#xFF0C;&#x5B83;&#x4EEC;&#x5B9E;&#x73B0;&#x7684;&#x5185;&#x5BB9;&#x662F;&#x5B8C;&#x5168;&#x4E00;&#x6837;&#x7684;&#xFF0C;&#x6211;&#x5C31;&#x59D1;&#x4E14;&#x8BA4;&#x4E3A;&#x6240;&#x6709;&#x9E1F;&#x7684;fly&#x65B9;&#x6CD5;&#x90FD;&#x662F;&#x4E00;&#x6837;&#x7684;&#x5427;&#xFF0C;&#x5982;&#x679C;&#x6BCF;&#x79CD;&#x9E1F;&#x90FD;&#x662F;&#x7528;&#x5B9E;&#x73B0;Bird&#x63A5;&#x53E3;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x8FD9;&#x662F;&#x76F8;&#x5F53;&#x4E0D;&#x597D;&#xFF0C;&#x4E07;&#x4E00;&#x54EA;&#x5929;&#x9E1F;&#x7C7B;&#x96C6;&#x4F53;&#x8FDB;&#x5316;&#x4E86;&#xFF0C;&#x6709;3&#x4E2A;&#x7FC5;&#x8180;&#x6765;&#x98DE;&#x4E86;&#xFF0C;&#x4FEE;&#x6539;&#x6240;&#x6709;&#x9E1F;&#x7684;fly&#x65B9;&#x6CD5;&#x53EF;&#x4E0D;&#x662F;&#x4E00;&#x4EF6;&#x8F7B;&#x677E;&#x7684;&#x4E8B;&#x3002;<br>&#x7EC8;&#x4E8E;&#x4E3B;&#x89D2;&#x8981;&#x767B;&#x573A;&#x4E86;&#xFF0C;&#x662F;&#x7684;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x52A0;&#x5165;&#x62BD;&#x8C61;&#x7C7B;<code>AbstractBird</code>&#xFF0C;&#x8BA9;&#x5B83;&#x5B9E;&#x73B0;<code>Bird</code>&#x63A5;&#x53E3;&#xFF0C;&#x5E76;&#x4E14;&#x4E3A;&#x6240;&#x6709;&#x9E1F;&#x7C7B;&#x63D0;&#x4F9B;&#x4E00;&#x4E2A;&#x516C;&#x7528;&#x7684;fly&#x65B9;&#x6CD5;&#x3002;&#x73B0;&#x5728;&#x7684;&#x7ED3;&#x6784;&#x5C31;&#x53D8;&#x6210;&#x4E86;&#x8FD9;&#x6837;<br><img src="/2016/05/23/&#x5173;&#x4E8E;AbstractInterface/AbstractInterface_after.png" alt="AbstractInterface After"></p>
-<p>&#x8FD9;&#x4E2A;<code>AbstractBird</code>&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x9AA8;&#x67B6;&#x5B9E;&#x73B0;&#x3002;<br>&#x9996;&#x5148;&#x8981;&#x5F3A;&#x8C03;&#x4E00;&#x70B9;&#x662F;&#xFF0C;&#x9AA8;&#x67B6;&#x5B9E;&#x73B0;&#x7C7B;&#x662F;&#x4E3A;&#x4E86;&#x7EE7;&#x627F;&#x7684;&#x76EE;&#x7684;&#x800C;&#x8BBE;&#x8BA1;&#x7684;&#xFF0C;<br>&#x90A3;&#x4E48;&#x8FD9;&#x6837;&#x505A;&#x6709;&#x4EC0;&#x4E48;&#x597D;&#x5904;&#xFF1F;</p>
+<p>我们都知道接口与抽象类的区别之一，就是接口只能定义方法，而抽象类不但可以定义方法，还可以包含具体的实现。那假如说我又想使用接口，又想让它有一个公用的实现，怎么整呢？这时候就到<code>AbstractInterface</code>闪亮全场了。</p>
+<p>现在假设是这种情况，有一个接口叫做Bird，它定义了一个方法fly。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Bird</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在来了燕子（Swallow），燕子嘛，本来就是鸟，这里让它实现Bird这个接口。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swallow</span> <span class="keyword">implements</span> <span class="title">Bird</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I'm a bird, fly with two wings"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>后来又来了乌鸦（Crow），同理让它实现Bird接口<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Crow</span> <span class="keyword">implements</span> <span class="title">Bird</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I'm a bird, fly with two wings"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结构为：</p>
+<p><img src="/2016/05/23/关于AbstractInterface/AbstractInterface_before.png" alt="AbstractInterface Before"></p>
+<p>可以发现，它们实现的内容是完全一样的，我就姑且认为所有鸟的fly方法都是一样的吧，如果每种鸟都是用实现Bird接口的方式，这是相当不好，万一哪天鸟类集体进化了，有3个翅膀来飞了，修改所有鸟的fly方法可不是一件轻松的事。<br>终于主角要登场了，是的，我们可以加入抽象类<code>AbstractBird</code>，让它实现<code>Bird</code>接口，并且为所有鸟类提供一个公用的fly方法。现在的结构就变成了这样<br><img src="/2016/05/23/关于AbstractInterface/AbstractInterface_after.png" alt="AbstractInterface After"></p>
+<p>这个<code>AbstractBird</code>就是一个骨架实现。<br>首先要强调一点是，骨架实现类是为了继承的目的而设计的，<br>那么这样做有什么好处？</p>
 <ol>
-<li>&#x56E0;&#x4E3A;&#x4F7F;&#x7528;&#x7684;&#x9AA8;&#x67B6;&#x5B9E;&#x73B0;&#xFF0C;&#x5B50;&#x7C7B;&#x5171;&#x6709;&#x7684;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x7531;&#x57FA;&#x7C7B;&#x7B80;&#x5355;&#x5B9E;&#x73B0;&#xFF1B;</li>
-<li>&#x5047;&#x5982;&#x6709;&#x4E00;&#x5929;<code>Bird</code>&#x63A5;&#x53E3;&#x53D8;&#x66F4;&#x4E86;&#xFF0C;&#x6240;&#x6709;&#x9E1F;&#x7C7B;&#x90FD;&#x638C;&#x63E1;&#x4E86;&#x4E00;&#x9879;&#x65B0;&#x6280;&#x80FD;&#xFF1A;&#x60AC;&#x505C;&#x3002;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x4E0D;&#x7528;&#x4E3A;&#x6240;&#x6709;&#x9E1F;&#x7C7B;&#x90FD;&#x52A0;&#x4E0A;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x8BA9;<code>AbstractBird</code>&#x5B9E;&#x73B0;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x5176;&#x5B50;&#x7C7B;&#x81EA;&#x7136;&#x4E5F;&#x5C31;&#x6709;&#x4E86;&#x8FD9;&#x4E2A;&#x529F;&#x80FD;&#x4E86;&#x3002;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x5B83;&#x53EF;&#x4EE5;&#x5728;&#x4E00;&#x5B9A;&#x7A0B;&#x5EA6;&#x4E0A;&#x51CF;&#x5C11;&#x63A5;&#x53E3;&#x53D8;&#x66F4;&#x5E26;&#x6765;&#x7684;&#x5F71;&#x54CD;&#x3002;</li>
+<li>因为使用的骨架实现，子类共有的方法可以由基类简单实现；</li>
+<li>假如有一天<code>Bird</code>接口变更了，所有鸟类都掌握了一项新技能：悬停。我们可以不用为所有鸟类都加上这个方法，只需要让<code>AbstractBird</code>实现这个方法，其子类自然也就有了这个功能了。也就是说它可以在一定程度上减少接口变更带来的影响。</li>
 </ol>
 
       
@@ -382,7 +384,7 @@
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -402,8 +404,7 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/05/23/关于AbstractInterface/"
-           data-title="关于AbstractInterface(骨架实现)" data-url="http://yoursite.com/2016/05/23/关于AbstractInterface/">
+      <div class="ds-thread" data-thread-key="2016/05/23/关于AbstractInterface/" data-title="关于AbstractInterface(骨架实现)" data-url="http://yoursite.com/2016/05/23/关于AbstractInterface/">
       </div>
     
   </div>
@@ -428,7 +429,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -439,16 +440,14 @@
 
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="Rod Zhang" />
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="Rod Zhang">
           <p class="site-author-name" itemprop="name">Rod Zhang</p>
           <p class="site-description motion-element" itemprop="description">纸上得来终觉浅，绝知此事要躬行</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -465,7 +464,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -518,10 +517,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

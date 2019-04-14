@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="算法,">
 
 
 
@@ -57,16 +57,20 @@
 
 
 
-<meta name="description" content="纸上得来终觉浅，绝知此事要躬行">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lost Little Attic">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="首先，什么是回文？简单说就是顺着读和倒着读都一样的，就是回文。这让我想起了电影《降临》中女主角的女儿的名字：HANNAH。 Manacher 算法，俗称“马拉车”算法，由 Manacher(人名) 发明，牛逼之处在于可以在 O(n) 时间复杂度内找到给定字符串的最长回文子串。 算法原理首先说明一下下文中会经常出现的变量及意义：  origStr: 给定字符串 newStr: 对给定字符串预处理后得">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Manacher(马拉车)算法求字符串的最长回文子串">
+<meta property="og:url" content="http://yoursite.com/2019/04/13/使用Manacher-马拉车-算法求字符串的最长回文子串/index.html">
 <meta property="og:site_name" content="Lost Little Attic">
-<meta property="og:description" content="纸上得来终觉浅，绝知此事要躬行">
+<meta property="og:description" content="首先，什么是回文？简单说就是顺着读和倒着读都一样的，就是回文。这让我想起了电影《降临》中女主角的女儿的名字：HANNAH。 Manacher 算法，俗称“马拉车”算法，由 Manacher(人名) 发明，牛逼之处在于可以在 O(n) 时间复杂度内找到给定字符串的最长回文子串。 算法原理首先说明一下下文中会经常出现的变量及意义：  origStr: 给定字符串 newStr: 对给定字符串预处理后得">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/04/13/使用Manacher-马拉车-算法求字符串的最长回文子串/confused.jpeg">
+<meta property="og:updated_time" content="2019-04-14T09:59:11.902Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lost Little Attic">
-<meta name="twitter:description" content="纸上得来终觉浅，绝知此事要躬行">
+<meta name="twitter:title" content="使用Manacher(马拉车)算法求字符串的最长回文子串">
+<meta name="twitter:description" content="首先，什么是回文？简单说就是顺着读和倒着读都一样的，就是回文。这让我想起了电影《降临》中女主角的女儿的名字：HANNAH。 Manacher 算法，俗称“马拉车”算法，由 Manacher(人名) 发明，牛逼之处在于可以在 O(n) 时间复杂度内找到给定字符串的最长回文子串。 算法原理首先说明一下下文中会经常出现的变量及意义：  origStr: 给定字符串 newStr: 对给定字符串预处理后得">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/13/使用Manacher-马拉车-算法求字符串的最长回文子串/confused.jpeg">
 
 
 
@@ -84,7 +88,7 @@
   };
 </script>
 
-  <title> Lost Little Attic </title>
+  <title> 使用Manacher(马拉车)算法求字符串的最长回文子串 | Lost Little Attic </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -114,9 +118,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -213,9 +215,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -235,10 +237,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2019/04/13/使用Manacher-马拉车-算法求字符串的最长回文子串/" itemprop="url">
-                  使用Manacher(马拉车)算法求字符串的最长回文子串
-                </a>
+                使用Manacher(马拉车)算法求字符串的最长回文子串
               
             
           </h1>
@@ -287,9 +286,7 @@
       
 
       
-        
-          
-            <p>首先，什么是回文？简单说就是顺着读和倒着读都一样的，就是回文。这让我想起了电影《降临》中女主角的女儿的名字：HANNAH。</p>
+        <p>首先，什么是回文？简单说就是顺着读和倒着读都一样的，就是回文。这让我想起了电影《降临》中女主角的女儿的名字：HANNAH。</p>
 <p>Manacher 算法，俗称“马拉车”算法，由 Manacher(人名) 发明，牛逼之处在于可以在 O(n) 时间复杂度内找到给定字符串的最长回文子串。</p>
 <h2 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h2><p>首先说明一下下文中会经常出现的变量及意义：</p>
 <ul>
@@ -395,517 +392,74 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p[i] = i &lt; maxRight ? Math.min(p[<span class="number">2</span> * id - i], maxRight - i) : <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 <p>背后包含的逻辑，思考却是这么的复杂，难以理解。掌握了这一行代码，清楚了 p[] 数组是如何来的，基本上就可以说是掌握了 Manacher 算法的精髓，剩下的就是通过 p[] 数组，再结合原字符串中字符在新字符串中的位置关系，就可以得到想要的最长回文子串了。</p>
 <h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.length() &lt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">    String newStr = fillStr(s);</span><br><span class="line">    <span class="keyword">int</span> resultId = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> resultLen = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> newSize = newStr.length();</span><br><span class="line">    <span class="keyword">int</span>[] p = <span class="keyword">new</span> <span class="keyword">int</span>[newSize];</span><br><span class="line">    <span class="keyword">int</span> id = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> maxRight = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; newSize; i++) &#123;</span><br><span class="line">        p[i] = i &lt; maxRight ? Math.min(p[<span class="number">2</span> * id - i], maxRight - i) : <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(i - p[i] &gt;= <span class="number">0</span> &amp;&amp; i + p[i] &lt; newSize &amp;&amp; newStr.charAt(i + p[i]) == newStr.charAt(i - p[i])) &#123;</span><br><span class="line">            p[i]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (maxRight &lt; p[i] + i) &#123;</span><br><span class="line">            maxRight = p[i] + i;</span><br><span class="line">            id = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (resultLen &lt; p[i]) &#123;</span><br><span class="line">            resultLen = p[i];</span><br><span class="line">            resultId = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> start = (resultId - resultLen + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> end = start + resultLen - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> s.substring(start, end);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">fillStr</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">    String specialChar = <span class="string">"#"</span>;</span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder(specialChar);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, size = str.length(); i &lt; size; i++) &#123;</span><br><span class="line">        sb.append(str.charAt(i)).append(specialChar);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
       
     </div>
 
     <div>
       
+        
+      
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/25/Dagger 2 User's Guide/" itemprop="url">
-                  Dagger 2 User's Guide
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-25T22:14:00+08:00" content="2016-09-25">
-              2016-09-25
-            </time>
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/翻译/" itemprop="url" rel="index">
-                    <span itemprop="name">翻译</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
+            <a href="/tags/算法/" rel="tag">#算法</a>
           
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/25/Dagger 2 User's Guide/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/25/Dagger 2 User's Guide/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-      	    <span id="/2016/09/25/Dagger 2 User's Guide/" class="leancloud_visitors" data-flag-title="Dagger 2 User's Guide">&nbsp; | &nbsp;阅读次数
-            </span>
-          
-
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>原文：<a href="http://google.github.io/dagger/users-guide.html" target="_blank" rel="noopener">http://google.github.io/dagger/users-guide.html</a></p>
-<p>一个应用中最好的类是那些像 <em>BarcodeDecoder</em>、<em>KoopaPhysicsEngine</em>，<em>AudioStreamer</em> 这种。它们有依赖，可能是<em>BarcodeCameraFinder</em>、<em>DefaultPhysicsEngine</em>、<em>HttpStreamer</em>。</p>
-<p>相反，最坏的类是那些占了空间但是实际上根本没有做多少事的，像 <em>BarcodeDecoderFactory</em>、<em>CameraServiceLoader</em>、<em>MutableContextWrapper</em> 这种。这些类只是笨拙的把一些有趣的东西捆绑在一起。</p>
-<p><strong>Dagger</strong> 是一个 那些 <em>FactoryFactory</em> 类的代替方案，它实现了依赖注入模式，你不用再承担编写那些模板的工作。它让你可以专注在那些有趣的类上。声明依赖，指定如何去满足它们。</p>
-<p>通过建立在标准的 <em>javax.inject</em> 注解<em>(JSR 330)</em>上，每个类都是容易测试的。你不需要很多的模板仅仅是为了把 <em>RpcCreditCardService</em> 换成 <em>FakeCreditCardService</em>。</p>
-<p>依赖注入不仅仅是为了测试。它同时可以方便的创建可复用，可互换的模块。你可以在你的所有app中共用同一个 <em>AuthenticationModule</em>。你还可以在开发期间运行 <em>DevLoggingModule</em> 而在生产环境中使用 <em>ProdLoggingModule</em> 使得在每种情形下得到正确的行为。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/25/Dagger 2 User's Guide/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/25/Dagger 2 User's Guide/" rel="next" title="Dagger 2 User's Guide">
+                <i class="fa fa-chevron-left"></i> Dagger 2 User's Guide
+              </a>
+            
           </div>
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+          <div class="post-nav-prev post-nav-item">
             
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/23/关于AbstractInterface/" itemprop="url">
-                  关于AbstractInterface(骨架实现)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-23T23:42:10+08:00" content="2016-05-23">
-              2016-05-23
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">笔记</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/23/关于AbstractInterface/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/关于AbstractInterface/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-      	    <span id="/2016/05/23/关于AbstractInterface/" class="leancloud_visitors" data-flag-title="关于AbstractInterface(骨架实现)">&nbsp; | &nbsp;阅读次数
-            </span>
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>看了Effective Java的第十八条接口优先抽象类，其中对抽象类与接口的区别，以及为什么接口优先于抽象类做了比较深入的说明。<br>这里我学习到了一个对我来说新的概念，可能有很多人用过，但是不知道它原来是有这么一个说法。它就是今天的主角：<code>AbstractInterface</code>，在Effective Java中也叫它<code>Skeletal Implementation</code>(骨架实现)。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/23/关于AbstractInterface/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
           </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/27/简单的理解一下RxJava中的lift/" itemprop="url">
-                  简单的理解一下RxJava中的lift
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-27T00:37:39+08:00" content="2016-03-27">
-              2016-03-27
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">笔记</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/27/简单的理解一下RxJava中的lift/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/27/简单的理解一下RxJava中的lift/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-      	    <span id="/2016/03/27/简单的理解一下RxJava中的lift/" class="leancloud_visitors" data-flag-title="简单的理解一下RxJava中的lift">&nbsp; | &nbsp;阅读次数
-            </span>
-          
-
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>做为一个刚刚入门RxJava的种子型选手，目前也就是掌握了RxJava的一些常用操作符，以及知道一些不常用但在某些场景下有用的操作符。然而，这是远远不够滴^_^</p>
-<p>在开始学习RxJava的时候，只知道使用一系列的操作符链起来，就可以进行链式操作，也知道当调用了<code>subscribe</code>的时候<code>Observable</code>里的<code>OnSubscriber</code>的<code>call</code>方法会执行，but why？它们之间到底是什么关系？其实才开始学的时候也问过自己这个问题，但是怕一开始就挑战这么深入的东西反倒不利于自己学习（说到底就是怂了）。</p>
-<p>废话够多了，切入正题。</p>
-<p>今天就以一个简单的例子，简单的分析一下从<code>Observable</code>创建到<code>Observer</code>监听到并执行的过程。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/27/简单的理解一下RxJava中的lift/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
+
+    <div class="post-spread">
       
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
 
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/24/New-Day/" itemprop="url">
-                  New Day
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-24T00:21:08+08:00" content="2016-03-24">
-              2016-03-24
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">杂谈</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/24/New-Day/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/24/New-Day/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-      	    <span id="/2016/03/24/New-Day/" class="leancloud_visitors" data-flag-title="New Day">&nbsp; | &nbsp;阅读次数
-            </span>
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="I-want-to-start-my-bolg-fighting"><a href="#I-want-to-start-my-bolg-fighting" class="headerlink" title="I want to start my bolg, fighting!"></a>I want to start my bolg, fighting!</h3>
-          
-        
       
     </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
@@ -913,6 +467,13 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2019/04/13/使用Manacher-马拉车-算法求字符串的最长回文子串/" data-title="使用Manacher(马拉车)算法求字符串的最长回文子串" data-url="http://yoursite.com/2019/04/13/使用Manacher-马拉车-算法求字符串的最长回文子串/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -932,8 +493,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="Rod Zhang">
           <p class="site-author-name" itemprop="name">Rod Zhang</p>
@@ -983,6 +553,23 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法原理"><span class="nav-number">1.</span> <span class="nav-text">算法原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体步骤"><span class="nav-number">1.1.</span> <span class="nav-text">具体步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我在学习这个算法时遇到的困难"><span class="nav-number">2.</span> <span class="nav-text">我在学习这个算法时遇到的困难</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#细节剖析"><span class="nav-number">3.</span> <span class="nav-text">细节剖析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要预处理原字符串？"><span class="nav-number">3.1.</span> <span class="nav-text">为什么要预处理原字符串？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原字符串与新字符串间的数学关系"><span class="nav-number">3.2.</span> <span class="nav-text">原字符串与新字符串间的数学关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何得到-p-数组"><span class="nav-number">3.3.</span> <span class="nav-text">如何得到 p[] 数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对于情况1"><span class="nav-number">3.3.1.</span> <span class="nav-text">对于情况1</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么-p-i-要等于-p-2-id-i-和-maxRight-i-中的最小值？"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">为什么 p[i] 要等于 p[2*id - i] 和 maxRight - i 中的最小值？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于情况2"><span class="nav-number">3.3.2.</span> <span class="nav-text">对于情况2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">5.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
       
 
     </div>
@@ -1067,6 +654,167 @@
   
 
   
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   
 
