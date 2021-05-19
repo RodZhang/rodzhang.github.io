@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="给你一个整数数组 nums ，返回 nums[i] XOR nums[j] 的最大运算结果，其中 0 ≤ i ≤ j &amp;lt; n 。 进阶：你可以在 O(n) 的时间解决这个问题吗？ 示例 1： 输入：nums = [3,10,5,25,2,8] 输出：28 解释：最大运算结果是 5 XOR 25 = 28.">
+<meta name="keywords" content="算法,Leetcode,异或,前缀树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="421.数组中两个数的最大异或值">
+<meta property="og:url" content="http://yoursite.com/2021/05/20/421-数组中两个数的最大异或值/index.html">
+<meta property="og:site_name" content="Lost Little Attic">
+<meta property="og:description" content="给你一个整数数组 nums ，返回 nums[i] XOR nums[j] 的最大运算结果，其中 0 ≤ i ≤ j &amp;lt; n 。 进阶：你可以在 O(n) 的时间解决这个问题吗？ 示例 1： 输入：nums = [3,10,5,25,2,8] 输出：28 解释：最大运算结果是 5 XOR 25 = 28.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2021/05/20/421-数组中两个数的最大异或值/trie.jpg">
+<meta property="og:updated_time" content="2021-05-19T18:26:46.225Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="421.数组中两个数的最大异或值">
+<meta name="twitter:description" content="给你一个整数数组 nums ，返回 nums[i] XOR nums[j] 的最大运算结果，其中 0 ≤ i ≤ j &amp;lt; n 。 进阶：你可以在 O(n) 的时间解决这个问题吗？ 示例 1： 输入：nums = [3,10,5,25,2,8] 输出：28 解释：最大运算结果是 5 XOR 25 = 28.">
+<meta name="twitter:image" content="http://yoursite.com/2021/05/20/421-数组中两个数的最大异或值/trie.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/20/421-数组中两个数的最大异或值/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>421.数组中两个数的最大异或值 | Lost Little Attic</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Lost Little Attic</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/20/421-数组中两个数的最大异或值/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rod Zhang">
+      <meta itemprop="description" content="纸上得来终觉浅，绝知此事要躬行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lost Little Attic">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          421.数组中两个数的最大异或值
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-05-20 02:16:23 / Modified: 02:26:46" itemprop="dateCreated datePublished" datetime="2021-05-20T02:16:23+08:00">2021-05-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>给你一个整数数组 nums ，返回 nums[i] XOR nums[j] 的最大运算结果，其中 0 ≤ i ≤ j &lt; n 。</p>
+<p>进阶：你可以在 O(n) 的时间解决这个问题吗？</p>
+<p>示例 1：</p>
+<pre><code>输入：nums = [3,10,5,25,2,8]
+输出：28
+解释：最大运算结果是 5 XOR 25 = 28.
+</code></pre><a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findMaximumXOR</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> deep = getTreeDeep(nums);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 没有想到合适的名字，这个变量的目的是表示 nums 这个数组中最大值的二进制表示的最左边 1 表示的数组</span></span><br><span class="line">        <span class="comment">// 不太好描述，举个例子，比如 9 的二进制表示为 1001，则 pivot = 8（即 1000）</span></span><br><span class="line">        <span class="comment">// 目的是为了后面和 nums 中的每一个树对比，判断它们二进制表示的各位数是否为 1</span></span><br><span class="line">        <span class="keyword">int</span> pivot = (<span class="keyword">int</span>) Math.pow(<span class="number">2</span>, deep - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        Node root = buildTree(nums, deep, pivot);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">            <span class="keyword">int</span> other = getMaxXor(root, num, pivot);</span><br><span class="line">            result = Math.max(result, num ^ other);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构建前缀树</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Node <span class="title">buildTree</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> deep, <span class="keyword">int</span> pivot)</span> </span>&#123;</span><br><span class="line">        Node root = <span class="keyword">new</span> Node(-<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">            addLeaf(root, num, deep, pivot);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构建树的详细逻辑</span></span><br><span class="line">    <span class="comment">// 举个例子，比如对于 9 这个数，二进制为 1001，假如 deep = 4，则 pivot = 8</span></span><br><span class="line">    <span class="comment">// 在第一层时 9 &amp; 8 = 8，所以给添加一个左子结点，然后下一层是应该和 4 做与运算，因此将 pivot &gt;&gt; 1，右移一位</span></span><br><span class="line">    <span class="comment">// 在第二层时 9 &amp; 4 = 0，所以给添加一个右子结点，pivot &gt;&gt; 1，得 2</span></span><br><span class="line">    <span class="comment">// 在第三层时 9 &amp; 2 = 0，添加一个右子结点，pivot &gt;&gt; 1，得 1</span></span><br><span class="line">    <span class="comment">// 在第四层时 9 &amp; 1 = 1，添加一个左子结点，结束</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addLeaf</span><span class="params">(Node root, <span class="keyword">int</span> num, <span class="keyword">int</span> deep, <span class="keyword">int</span> pivot)</span> </span>&#123;</span><br><span class="line">        Node node = root;</span><br><span class="line">        <span class="comment">// 深度，表示对一个数需要尝试添加 deep 这么多次子结点</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; deep; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((num &amp; pivot) == pivot) &#123;</span><br><span class="line">                <span class="comment">// 表示 num 在当前层次的二进制值为 1</span></span><br><span class="line">                <span class="comment">// 此时如果还没有左子结点，则构建一个</span></span><br><span class="line">                <span class="keyword">if</span> (node.left == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    node.left = <span class="keyword">new</span> Node(<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                node = node.left;</span><br><span class="line">                <span class="comment">// 右移一位，用于判断 num 的二进制在下一层是否是 1</span></span><br><span class="line">                pivot = pivot &gt;&gt; <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> ((num &amp; pivot) == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 表示 num 在当前层次的二进制值为 0</span></span><br><span class="line">                <span class="comment">// 尝试创建右子结点</span></span><br><span class="line">                <span class="keyword">if</span> (node.right == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    node.right = <span class="keyword">new</span> Node(<span class="number">0</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                node = node.right;</span><br><span class="line">                <span class="comment">// 右移一位，用于判断 num 的二进制在下一层是否是 1</span></span><br><span class="line">                pivot = pivot &gt;&gt; <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过前缀树获取在 nums 数组中，和参数 num 异或值最大的数</span></span><br><span class="line">    <span class="comment">// 关键：</span></span><br><span class="line">    <span class="comment">//      1. 要异或的结果最大，最好是异或后每一位上的值都是1，所以要争取二进制对应位上的值不同</span></span><br><span class="line">    <span class="comment">//          也就是说，如果 num 在当前位上的值是0，那我们就应该去前续树中找对应位是 1 的数</span></span><br><span class="line">    <span class="comment">//      2. 最关键的，我们要找的是原 nums 中的元素。接第1点，比如我们需要的是 1</span></span><br><span class="line">    <span class="comment">//          但是当前位只有值为 0 的结点，则我们也只得取此结点，这样下去得到的才会是原 nums</span></span><br><span class="line">    <span class="comment">//          中的元素</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getMaxXor</span><span class="params">(Node root, <span class="keyword">int</span> num, <span class="keyword">int</span> pivot)</span> </span>&#123;</span><br><span class="line">        Node node = root;</span><br><span class="line">        Node next = node;</span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((pivot &amp; num) == pivot) &#123;</span><br><span class="line">                <span class="comment">// 说明 num 在这层的值是 1，所以应该找的另一个数，在这层应该是 0</span></span><br><span class="line">                <span class="keyword">if</span> (node.right != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="comment">// 如果存在，就最好</span></span><br><span class="line">                    next = node.right;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 如果在此位不存在，则只能取左子结点了</span></span><br><span class="line">                    next = node.left;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 思想和上面的一样</span></span><br><span class="line">                <span class="keyword">if</span> (node.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    next = node.left;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    next = node.right;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (next != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">// 如果有，说明树还没有遍历到底，则把 result 左移</span></span><br><span class="line">                result = result &lt;&lt; <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span> (next == node.left) &#123;</span><br><span class="line">                    <span class="comment">// 如果当前是左子结点，则需要把 result+1</span></span><br><span class="line">                    result += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            node = next;</span><br><span class="line">            <span class="comment">// 把 pivot 右移，以比较下一位的是否是1</span></span><br><span class="line">            pivot = pivot &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算我们准备构建的前缀树的深度</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getTreeDeep</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 这里我们构建的是一个用二进制来表示 nums 数组中全部元素的前缀树</span></span><br><span class="line">        <span class="comment">// 树的深度由数组中的最大值决定的</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">            max = Math.max(num, max);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> deep = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (max != <span class="number">0</span>) &#123;</span><br><span class="line">            deep++;</span><br><span class="line">            <span class="comment">// 通过右移位运算，得出一个数的二进制表示中中最左边的 1 的位置</span></span><br><span class="line">            max = max &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> deep;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> value;</span><br><span class="line">        Node left;</span><br><span class="line">        Node right;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">            value = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关键"><a href="#关键" class="headerlink" title="关键"></a>关键</h2><ul>
+<li><p>前缀树</p>
+<p>  Trie树，即字典树，又称单词查找树或键树，是一种树形结构，是一种哈希树的变种。典型应用是用于统计和排序大量的字符串（但不仅限于字符串），所以经常被搜索引擎系统用于文本词频统计。它的优点是：最大限度地减少无谓的字符串比较。</p>
+<p>  Trie的核心思想是空间换时间。利用字符串的公共前缀来降低查询时间的开销以达到提高效率的目的。</p>
+</li>
+</ul>
+<h2 id="这个题目的解法"><a href="#这个题目的解法" class="headerlink" title="这个题目的解法"></a>这个题目的解法</h2><ol>
+<li>构建二进制前缀树<br>具体来说就是利用数的二进制表示，从高位到低位构建一棵树（因为只有0和1 两个值，所以是一棵二叉树），每个从根节点到叶子节点的路径都表示一个数。（构建的树看下图）</li>
+<li>搜索前缀树<br>然后遍历数组中的数字，将每一个二进制位，在对应的层中找到一个与或的最大值，也就是：如果是1，找0的那条路径，如果是0，找1的那条路径。<br>这样搜索下来的路径就是这个数字和整个数组与或的最大值，看下图</li>
+</ol>
+<p><img src="/2021/05/20/421-数组中两个数的最大异或值/trie.jpg" alt="alt"></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>其实每个数字还是都要和其他数字做个异或，不过利用了前缀树和贪心思想，每一步都挑一个最大的值，把其他路径都剪枝掉了。</p>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>构建前缀树，遍历一个数字，是O(N), 对于每个数字，遍历每一个二进制位，由于数字最大是32位，所以是常数，总的复杂度为 O(N)，树的最大层次也是32层(这个还可以优化，取当前数组中所有数的最长二进制表示即可，肯定小于等于32位)</p>
+<p>搜索前缀树，遍历每一个数字，是O(N), 对于数字的每个二进制位，我们要往下搜索树，不过树的层次是一个常数，所以总的复杂度还是O(N)</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/算法/" rel="tag"># 算法</a>
+              <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+              <a href="/tags/异或/" rel="tag"># 异或</a>
+              <a href="/tags/前缀树/" rel="tag"># 前缀树</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/20/1738-找出第K大的异或坐标值/" rel="prev" title="1738.找出第K大的异或坐标值">
+      <i class="fa fa-chevron-left"></i> 1738.找出第K大的异或坐标值
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/20/1310-子数组异或查询/" rel="next" title="1310.子数组异或查询">
+      1310.子数组异或查询 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键"><span class="nav-number">1.</span> <span class="nav-text">关键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#这个题目的解法"><span class="nav-number">2.</span> <span class="nav-text">这个题目的解法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">3.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度分析"><span class="nav-number">4.</span> <span class="nav-text">复杂度分析</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rod Zhang</p>
+  <div class="site-description" itemprop="description">纸上得来终觉浅，绝知此事要躬行</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rod Zhang</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

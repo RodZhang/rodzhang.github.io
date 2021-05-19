@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="https://leetcode-cn.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/ 有一个长度为 arrLen 的数组，开始有一个指针在索引 0 处。 每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地（指针不能被移动到数组范围外）。 给你两个整数 steps 和 arrLen ，请你计">
+<meta name="keywords" content="算法,Leetcode,动态规则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1269.停在原地的方案数">
+<meta property="og:url" content="http://yoursite.com/2021/05/20/1269-停在原地的方案数/index.html">
+<meta property="og:site_name" content="Lost Little Attic">
+<meta property="og:description" content="https://leetcode-cn.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/ 有一个长度为 arrLen 的数组，开始有一个指针在索引 0 处。 每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地（指针不能被移动到数组范围外）。 给你两个整数 steps 和 arrLen ，请你计">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-19T18:35:21.748Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1269.停在原地的方案数">
+<meta name="twitter:description" content="https://leetcode-cn.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/ 有一个长度为 arrLen 的数组，开始有一个指针在索引 0 处。 每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地（指针不能被移动到数组范围外）。 给你两个整数 steps 和 arrLen ，请你计">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/20/1269-停在原地的方案数/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>1269.停在原地的方案数 | Lost Little Attic</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Lost Little Attic</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/20/1269-停在原地的方案数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rod Zhang">
+      <meta itemprop="description" content="纸上得来终觉浅，绝知此事要躬行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lost Little Attic">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1269.停在原地的方案数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-05-20 02:32:00 / Modified: 02:35:21" itemprop="dateCreated datePublished" datetime="2021-05-20T02:32:00+08:00">2021-05-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://leetcode-cn.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/</a></p>
+<p>有一个长度为 arrLen 的数组，开始有一个指针在索引 0 处。</p>
+<p>每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地（指针不能被移动到数组范围外）。</p>
+<p>给你两个整数 steps 和 arrLen ，请你计算并返回：在恰好执行 steps 次操作以后，指针仍然指向索引 0 处的方案数。</p>
+<p>由于答案可能会很大，请返回方案数 模 10^9 + 7 后的结果。</p>
+<p>示例 1：</p>
+<pre><code>输入：steps = 3, arrLen = 2
+输出：4
+解释：3 步后，总共有 4 种不同的方法可以停在索引 0 处。
+向右，向左，不动
+不动，向右，向左
+向右，不动，向左
+不动，不动，不动
+</code></pre><a id="more"></a>
+<p>优化前</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">numWays</span><span class="params">(<span class="keyword">int</span> steps, <span class="keyword">int</span> arrLen)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> mode = <span class="number">1000000007</span>;</span><br><span class="line">        <span class="keyword">int</span> maxIndex = Math.min(steps, arrLen - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">int</span>[][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[steps + <span class="number">1</span>][maxIndex + <span class="number">1</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= steps; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= maxIndex; j++) &#123;</span><br><span class="line">                dp[i][j] =  dp[i-<span class="number">1</span>][j];</span><br><span class="line">                <span class="keyword">if</span> (j - <span class="number">1</span> &gt;= <span class="number">0</span>) &#123; <span class="comment">// 保证下标不溢出</span></span><br><span class="line">                    dp[i][j] = (dp[i-<span class="number">1</span>][j-<span class="number">1</span>] + dp[i][j]) % mode;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (j + <span class="number">1</span> &lt;= maxIndex) &#123; <span class="comment">// 保证下标不溢出</span></span><br><span class="line">                    dp[i][j] = (dp[i-<span class="number">1</span>][j+<span class="number">1</span>] + dp[i][j]) % mode;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[steps][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h2><p>明显的，像这种要在上一步的基础上前进后退的，基本上就可以用动态规则的思想来解决。</p>
+<p>而动态规则最关键的，就是要想清楚 <strong>dp 里存什么值，有什么含义</strong>。</p>
+<p>在这里，题目中说到了求<strong>方案数</strong>，最直观的能想到用 dp[i] 来表示 steps = i 时的方案数。同时又提到了 dp[i] 和 dp[i-1] 的关系（<em>每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地</em>），加上这个条件，就有点麻烦了，怎么来表示呢？</p>
+<p>感觉要画个图可能比较好理解，比如说：</p>
+<pre><code>假如我们要求的是经过 steps = 4 时（*其实这时 steps 是多少并不重要*），停在下标为 3 的方案数
+
+i = 4
+index: 0, 1, 2, 3, 4, 5, 6, 7, 8
+                ^
+                |
+              dp[4]
+由条件 [每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地]
+
+所以 dp[3] 此时是有 3 种可能的情况
+[1]         dp[3] 向右移动一位即可停在 index = 3 处
+             |
+             V
+index: 0, 1, 2, 3, 4, 5, 6, 7, 8
+                ^
+                |
+              dp[4]
+================================
+[2]           dp[3]  不动即可停在 index = 3 处
+                |
+                V
+index: 0, 1, 2, 3, 4, 5, 6, 7, 8
+                ^
+                |
+              dp[4]
+================================
+[3]              dp[3] 向左移动一位即可停在 index = 3 处
+                   |
+                   V
+index: 0, 1, 2, 3, 4, 5, 6, 7, 8
+                ^
+                |
+              dp[4]
+
+可见一维数组无法表达这种关系，我们还需要一个维度 [下标]，用来表示进行了 steps 步后，停在了 index 处的方案数，这样就可以表示 dp[i] 和 dp[i-1] 之间的关系了。如下：
+
+dp[steps][index] 表示进行了 steps 步后，停在了 index 处
+则
+在情况 [1] 中，dp[steps][index] = dp[steps-1][index-1]
+在情况 [2] 中，dp[steps][index] = dp[steps-1][index]
+在情况 [3] 中，dp[steps][index] = dp[steps-1][index+1]
+而所有可能方案数即为这3种情况之和
+即：dp[steps][index] = dp[steps-1][index-1] + dp[steps-1][index] + dp[steps-1][index+1]
+注意：index-1 和 index+1 不能溢出，还有就是全部方案数的和不能溢出
+</code></pre><p>以上是解决此问题的核心思路，接下来还需要关注一些边界条件。然后我们最终需要的值，其实是 <strong>dp[steps][0]</strong>，以此思路实现的代码即为上面优化前的代码。</p>
+<ul>
+<li>当没有进行任何操作时，指针一定位于下标 0，因此动态规划的边界条件是 dp[0][0] = 1，<strong>通俗点说，就是不进行任何(steps=0)操作，同时要索引指在 index = 0 的位置，就只有一种可能</strong></li>
+<li>当 1 ≤ j ≤ min(arrLen−1,steps) 时有 dp[0][j] = 0，<strong>通俗点说，就是想不进行任何操作，同时又想索引指在 非0 的位置，是不可能的</strong></li>
+<li>由于 dp 的第二个维度表示的是下标，又可以得出一个边界，那就是小标应该 arrLen - 1 和 steps 间<strong>小</strong>的那一个</li>
+<li><p>关于对方案数求模的问题，为了避免溢出，其实是应该对每个状态的方案数都取模，然后再相加的。</p>
+<pre><code>这段代码如何理解？
+
+dp[i][j] =  dp[i-1][j];
+if (j - 1 &gt;= 0) { // 保证下标不溢出
+    dp[i][j] = (dp[i-1][j-1] + dp[i][j]) % mode;
+}
+if (j + 1 &lt;= maxIndex) { // 保证下标不溢出
+    dp[i][j] = (dp[i-1][j+1] + dp[i][j]) % mode;
+}
+
+验证下它的正确性
+
+dp[steps][index] = dp[steps-1][index-1] + dp[steps-1][index] + dp[steps-1][index+1]
+简写如下：
+dp[s][i] = dp[s-1][i-1] + dp[s-1][i] + dp[s-1][i+1]
+则 
+方案数 count = (dp[s-1][i-1] + dp[s-1][i] + dp[s-1][i+1]) % m
+
+代码刚开始时
+dp[i][j] =  dp[i-1][j]
+然后
+dp[i][j] = (dp[i-1][j-1] + dp[i][j]) % mode
+         = (dp[i-1][j-1] + dp[i-1][j]) % mode
+然后
+dp[i][j] = (dp[i][j] + dp[i-1][j+1]) % mode
+         = ((dp[i-1][j-1] + dp[i-1][j]) % mode + dp[i-1][j+1]) % mode
+mode 记作 m
+记 dp[i-1][j-1] = a
+   dp[i-1][j] = b
+   dp[i-1][j+1] = c，则有
+方案数 count = ((a + b) % m + c) % m  
+
+实际不考虑溢出的话，我们求的是 (a + b + c) % m，看结果这里的值是相等的，也就是说，
+需要证明 (a + b) % m + c 和 a + b + c 是同余式，
+简化一下，记 a+b = a, c = b，即需要证明
+a % m + b ≡ a + b (mod m) 即 a % m + b 和 a + b 是以 m 为模的同余式
+
+how?
+
+这里涉及一个同余式的概念
+
+设m是大于1的正整数，a、b是整数，如果m|(a-b)，则称a与b关于模m同余，记作a≡b(mod m)，读作a与b对模m同余。
+记作：a≡b (mod m)，
+读作：a同余于b模m，或读作a与b对模m同余，例如26≡2(mod 12)。
+同时，同余式还有一个非常重要的性质，即：
+（1）若a≡0(mod m)，则m|a；
+（2）a≡b(mod m)等价于a与b分别用m去除，余数相同
+
+根据 m|(a-b)和性质(1) ，能证明 (a + b) % m + c - (a + b + c) ≡ 0(mod m) 即可
+
+假设 (a + b) % m + c - (a + b + c) ≡ 0(mod m)
+(a + b) % m + c - (a + b + c)
+    = (a + b) % m - (a + b)
+记 a + b = a
+也就是要证明 a % m - a ≡ 0(mod m)
+即证明 a % m - a = n * m (n &gt;= 0)，也就是证明 a % m  - a 能被 m 整除
+这是肯定的。
+因为对任意一个数 a, 关于 m 的余数，都有以下关系
+a % m = a - n*m
+所以 
+a % m - a = -n*m
+-n*m ≡ 0(mod m)
+
+其实这里的 dp[i][j] 就是原 dp[i][j] 取模后的值
+</code></pre></li>
+</ul>
+<p>从 dp[steps][index] = dp[steps-1][index-1] + dp[steps-1][index] + dp[steps-1][index+1] 可以看到，当前的 dp[stesp] 只和它的上一个(dp[steps-1])有关，因此可以用一个一维数组。和上面的相比，上面用二维数组是保存了step 从 0 到 1 的全部方案数，现在只需要保存上一步的方案数即可，相当于是取的二维数组的第二个维度。</p>
+<p>优化后代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">numWays</span><span class="params">(<span class="keyword">int</span> steps, <span class="keyword">int</span> arrLen)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> mode = <span class="number">1000000007</span>;</span><br><span class="line">        <span class="keyword">int</span> maxIndex = Math.min(steps, arrLen - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">int</span>[] dp = <span class="keyword">new</span> <span class="keyword">int</span>[maxIndex + <span class="number">1</span>];</span><br><span class="line">        dp[<span class="number">0</span>] =<span class="number">1</span> ;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= steps; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span>[] dpNext = <span class="keyword">new</span> <span class="keyword">int</span>[dp.length];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= maxIndex; j++) &#123;</span><br><span class="line">                dpNext[j] =  dp[j];</span><br><span class="line">                <span class="keyword">if</span> (j - <span class="number">1</span> &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                    dpNext[j] = (dp[j-<span class="number">1</span>] + dpNext[j]) % mode;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (j + <span class="number">1</span> &lt;= maxIndex) &#123;</span><br><span class="line">                    dpNext[j] = (dp[j+<span class="number">1</span>] + dpNext[j]) % mode;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            dp = dpNext;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最优</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">numWays</span><span class="params">(<span class="keyword">int</span> steps, <span class="keyword">int</span> arrLen)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> mode = <span class="number">1000000007</span>;</span><br><span class="line">        <span class="comment">// 其实主要是这里，把最小步长缩小了一半</span></span><br><span class="line">        <span class="comment">// 因为如果想要返回起点，肯定走到一半步数时就要往回走了，</span></span><br><span class="line">        <span class="comment">// 不然就无法回到起点，所以最多就走到一半的位置</span></span><br><span class="line">        <span class="keyword">int</span> min = Math.min(steps / <span class="number">2</span> + <span class="number">1</span>, arrLen);</span><br><span class="line">        <span class="keyword">int</span>[][] result = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>][min + <span class="number">2</span>];</span><br><span class="line">        result[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= steps; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= min; j++)&#123;</span><br><span class="line">                <span class="comment">// 这个地方的作用和上面的代码实现是一样的，只是比较 geek 一点</span></span><br><span class="line">                result[i &amp; <span class="number">1</span>][j] = (( result[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j - <span class="number">1</span>] + result[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j] ) % mode + result[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j + <span class="number">1</span>] ) % mode;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result[steps &amp; <span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/算法/" rel="tag"># 算法</a>
+              <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+              <a href="/tags/动态规则/" rel="tag"># 动态规则</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/20/1734-解码异或后的排列/" rel="prev" title="1734.解码异或后的排列">
+      <i class="fa fa-chevron-left"></i> 1734.解码异或后的排列
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/20/12-整数转罗马数字/" rel="next" title="12.整数转罗马数字">
+      12.整数转罗马数字 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键点"><span class="nav-number">1.</span> <span class="nav-text">关键点</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rod Zhang</p>
+  <div class="site-description" itemprop="description">纸上得来终觉浅，绝知此事要躬行</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rod Zhang</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

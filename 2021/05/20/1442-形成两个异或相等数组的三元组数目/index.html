@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ttps://leetcode-cn.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/ 给你一个整数数组 arr 。 现需要从数组中取三个下标 i、j 和 k ，其中 (0 &amp;lt;= i &amp;lt; j &amp;lt;= k &amp;lt; arr.length) 。 a 和 b 定义如下： a = arr[i] ^ arr[">
+<meta name="keywords" content="算法,Leetcode,异或,前缀异或数组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1442.形成两个异或相等数组的三元组数目">
+<meta property="og:url" content="http://yoursite.com/2021/05/20/1442-形成两个异或相等数组的三元组数目/index.html">
+<meta property="og:site_name" content="Lost Little Attic">
+<meta property="og:description" content="ttps://leetcode-cn.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/ 给你一个整数数组 arr 。 现需要从数组中取三个下标 i、j 和 k ，其中 (0 &amp;lt;= i &amp;lt; j &amp;lt;= k &amp;lt; arr.length) 。 a 和 b 定义如下： a = arr[i] ^ arr[">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-19T18:27:05.232Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1442.形成两个异或相等数组的三元组数目">
+<meta name="twitter:description" content="ttps://leetcode-cn.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/ 给你一个整数数组 arr 。 现需要从数组中取三个下标 i、j 和 k ，其中 (0 &amp;lt;= i &amp;lt; j &amp;lt;= k &amp;lt; arr.length) 。 a 和 b 定义如下： a = arr[i] ^ arr[">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/20/1442-形成两个异或相等数组的三元组数目/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>1442.形成两个异或相等数组的三元组数目 | Lost Little Attic</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Lost Little Attic</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/20/1442-形成两个异或相等数组的三元组数目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rod Zhang">
+      <meta itemprop="description" content="纸上得来终觉浅，绝知此事要躬行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lost Little Attic">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1442.形成两个异或相等数组的三元组数目
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-05-20 02:25:19 / Modified: 02:27:05" itemprop="dateCreated datePublished" datetime="2021-05-20T02:25:19+08:00">2021-05-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>ttps://leetcode-cn.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/</p>
+<p>给你一个整数数组 arr 。</p>
+<p>现需要从数组中取三个下标 i、j 和 k ，其中 (0 &lt;= i &lt; j &lt;= k &lt; arr.length) 。</p>
+<p>a 和 b 定义如下：</p>
+<p>a = arr[i] ^ arr[i + 1] ^ … ^ arr[j - 1]<br>b = arr[j] ^ arr[j + 1] ^ … ^ arr[k]<br>注意：^ 表示 按位异或 操作。</p>
+<p>请返回能够令 a == b 成立的三元组 (i, j , k) 的数目。</p>
+<p>示例 1：</p>
+<pre><code>输入：arr = [2,3,1,6,7]
+输出：4
+解释：满足题意的三元组分别是 (0,1,2), (0,2,2), (2,3,4) 以及 (2,4,4)
+</code></pre><a id="more"></a>
+<h2 id="最糙的实现"><a href="#最糙的实现" class="headerlink" title="最糙的实现"></a>最糙的实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countTriplets</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] s = <span class="keyword">new</span> <span class="keyword">int</span>[arr.length + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            s[i] = s[i-<span class="number">1</span>] ^ arr[i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; arr.length; j++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> k = j + <span class="number">1</span>; k &lt; arr.length; k++) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (s[i] == s[k+<span class="number">1</span>]) &#123;</span><br><span class="line">                        result++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h2><ul>
+<li>前缀异或数组，这个在【<a href="1310.子数组异或查询.md">1310.子数组异或查询</a>】中有用到</li>
+<li>对这个题而言，更关键的在于：为什么 s[i] == s[k+1]，就能证明此时的下标 i，j，k 就能满足题目要求？</li>
+</ul>
+<h3 id="求证过程"><a href="#求证过程" class="headerlink" title="求证过程"></a>求证过程</h3><p>根据题目定义：</p>
+<pre><code>a = arr[i] ^ arr[i + 1] ^ ... ^ arr[j - 1]
+b = arr[j] ^ arr[j + 1] ^ ... ^ arr[k]
+</code></pre><p>前缀异或值 s[j]</p>
+<pre><code>因为 
+s[j] = (arr[0] ^ arr[1] ...^ arr[i-1]) ^ (arr[i] ... ^ arr[j - 1])
+     = s[i] ^ a
+所以
+s[i] ^ s[j] = s[i] ^ s[i] ^ a
+又因为任何数异或它本身都为0，而任何数异或0都等于它本身，所以
+s[i] ^ s[j] = a
+
+同理对 s[k + 1]
+s[k + 1] = (arr[0] .. ^ arr[i - 1]) ^ (arr[i] ... ^ arr[j - 1]) ^ (arr[j] ... ^ arr[k])
+         = s[i] ^ a ^ b
+所以
+s[i] ^ s[k + 1] = s[i] ^ s[i] ^ a ^ b
+                = a ^ b
+即 a ^ b = s[i] ^ s[k + 1]
+因此
+当 a == b 时，s[i] == s[k + 1]
+</code></pre><h2 id="优化-方法二：二重循环"><a href="#优化-方法二：二重循环" class="headerlink" title="优化 方法二：二重循环"></a>优化 方法二：二重循环</h2><p>当等式 s[i] == s[k+1] 成立时，[i+1, k] 的范围内的任意 j 都是符合要求的，对应的三元组个数为 k-i。因此我们只需枚举下标 i 和 k。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countTriplets</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] s = <span class="keyword">new</span> <span class="keyword">int</span>[arr.length + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            s[i + <span class="number">1</span>] = s[i] ^ arr[i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = i + <span class="number">1</span>; k &lt; arr.length; k++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (s[i] == s[k+<span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="comment">// 关键是这个是怎么来的？</span></span><br><span class="line">                    <span class="comment">// 表示从 i 到 k之间，有 k - i 个 j</span></span><br><span class="line">                    result += k - i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="优化-方法三：哈希表（一重循环）"><a href="#优化-方法三：哈希表（一重循环）" class="headerlink" title="优化 方法三：哈希表（一重循环）"></a>优化 方法三：哈希表（一重循环）</h2><p>对于下标 k，若下标 i 取值为 i1, i2, i3 … im 时，均能满足 s[i] == s[k+1] 成立</p>
+<p>由方法二，对取值为 i/k 时，result += k - i，因此就是求全部满足 s[i] == s[k+1] 的标下取值的方案之和</p>
+<p>即 (k - i1) + (k - i2) + .. + (k - im) = <strong>m*k - (i1 + i2 + i3 + .. + im)</strong></p>
+<p>也就是说，当遍历下标 k 时，我们需要知道所有满足 s[i] = s[k+1]的</p>
+<ul>
+<li>下标 i 的出现次数 m</li>
+<li>下标 i 之和</li>
+</ul>
+<p>上面的推导出来容易，要代码实现就有点麻烦了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countTriplets</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] s = <span class="keyword">new</span> <span class="keyword">int</span>[arr.length + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">// 这里可以优化下，放到下面的 for 循环一起</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            s[i + <span class="number">1</span>] = s[i] ^ arr[i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 用来保存当满足条件时 i 的数量</span></span><br><span class="line">        Map&lt;Integer, Integer&gt; count = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="comment">// 用来保存当满足条件时 i 的和</span></span><br><span class="line">        Map&lt;Integer, Integer&gt; total = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; arr.length; k++) &#123;</span><br><span class="line">            <span class="comment">// 说明之前放入过满足条件的 i ，使得 s[i] == s[k+1]</span></span><br><span class="line">            <span class="keyword">if</span> (count.containsKey(s[k+<span class="number">1</span>])) &#123;</span><br><span class="line">                <span class="comment">// 相当于 m*k - (i1 + i2 + i3 + .. + im)</span></span><br><span class="line">                result += count.get(s[k+<span class="number">1</span>]) * k - total.get(s[k+<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">            count.put(s[k], count.getOrDefault(s[k], <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">            total.put(s[k], total.getOrDefault(s[k], <span class="number">0</span>) + k);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/算法/" rel="tag"># 算法</a>
+              <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+              <a href="/tags/异或/" rel="tag"># 异或</a>
+              <a href="/tags/前缀异或数组/" rel="tag"># 前缀异或数组</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/20/1310-子数组异或查询/" rel="prev" title="1310.子数组异或查询">
+      <i class="fa fa-chevron-left"></i> 1310.子数组异或查询
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/20/1734-解码异或后的排列/" rel="next" title="1734.解码异或后的排列">
+      1734.解码异或后的排列 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#最糙的实现"><span class="nav-number">1.</span> <span class="nav-text">最糙的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键点"><span class="nav-number">2.</span> <span class="nav-text">关键点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#求证过程"><span class="nav-number">2.1.</span> <span class="nav-text">求证过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化-方法二：二重循环"><span class="nav-number">3.</span> <span class="nav-text">优化 方法二：二重循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化-方法三：哈希表（一重循环）"><span class="nav-number">4.</span> <span class="nav-text">优化 方法三：哈希表（一重循环）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rod Zhang</p>
+  <div class="site-description" itemprop="description">纸上得来终觉浅，绝知此事要躬行</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rod Zhang</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
