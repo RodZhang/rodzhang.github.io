@@ -17,27 +17,27 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"rodzhang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="https://leetcode-cn.com/problems/find-kth-largest-xor-coordinate-value/ 给你一个二维矩阵 matrix 和一个整数 k ，矩阵大小为 m x n 由非负整数组成。 矩阵中坐标 (a, b) 的 值 可由对所有满足 0 &amp;lt;= i &amp;lt;= a &amp;lt; m 且 0 &amp;lt;= j &amp;lt;= b &amp;lt; n 的元素 m">
 <meta name="keywords" content="算法,Leetcode,异或,前缀异或数组,K">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1738.找出第K大的异或坐标值">
-<meta property="og:url" content="http://yoursite.com/2021/05/20/1738-找出第K大的异或坐标值/index.html">
+<meta property="og:url" content="https://rodzhang.github.io/2021/05/20/1738-找出第K大的异或坐标值/index.html">
 <meta property="og:site_name" content="Lost Little Attic">
 <meta property="og:description" content="https://leetcode-cn.com/problems/find-kth-largest-xor-coordinate-value/ 给你一个二维矩阵 matrix 和一个整数 k ，矩阵大小为 m x n 由非负整数组成。 矩阵中坐标 (a, b) 的 值 可由对所有满足 0 &amp;lt;= i &amp;lt;= a &amp;lt; m 且 0 &amp;lt;= j &amp;lt;= b &amp;lt; n 的元素 m">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k.png">
-<meta property="og:image" content="http://yoursite.com/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k_2.png">
-<meta property="og:image" content="http://yoursite.com/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k_3.png">
-<meta property="og:updated_time" content="2021-05-19T18:26:44.453Z">
+<meta property="og:image" content="https://rodzhang.github.io/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k.png">
+<meta property="og:image" content="https://rodzhang.github.io/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k_2.png">
+<meta property="og:image" content="https://rodzhang.github.io/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k_3.png">
+<meta property="og:updated_time" content="2021-05-20T13:14:34.731Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="1738.找出第K大的异或坐标值">
 <meta name="twitter:description" content="https://leetcode-cn.com/problems/find-kth-largest-xor-coordinate-value/ 给你一个二维矩阵 matrix 和一个整数 k ，矩阵大小为 m x n 由非负整数组成。 矩阵中坐标 (a, b) 的 值 可由对所有满足 0 &amp;lt;= i &amp;lt;= a &amp;lt; m 且 0 &amp;lt;= j &amp;lt;= b &amp;lt; n 的元素 m">
-<meta name="twitter:image" content="http://yoursite.com/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k.png">
+<meta name="twitter:image" content="https://rodzhang.github.io/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k.png">
 
-<link rel="canonical" href="http://yoursite.com/2021/05/20/1738-找出第K大的异或坐标值/">
+<link rel="canonical" href="https://rodzhang.github.io/2021/05/20/1738-找出第K大的异或坐标值/">
 
 
 <script id="page-configurations">
@@ -160,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/20/1738-找出第K大的异或坐标值/">
+    <link itemprop="mainEntityOfPage" href="https://rodzhang.github.io/2021/05/20/1738-找出第K大的异或坐标值/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-05-20 02:04:47 / Modified: 02:26:44" itemprop="dateCreated datePublished" datetime="2021-05-20T02:04:47+08:00">2021-05-20</time>
+              <time title="Created: 2021-05-20 02:04:47 / Modified: 21:14:34" itemprop="dateCreated datePublished" datetime="2021-05-20T02:04:47+08:00">2021-05-20</time>
             </span>
 
           
@@ -209,22 +209,24 @@
 </code></pre><a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">kthLargestValue</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = matrix.length;</span><br><span class="line">        <span class="keyword">int</span> n = matrix[<span class="number">0</span>].length;</span><br><span class="line">        <span class="keyword">int</span>[][] pre = <span class="keyword">new</span> <span class="keyword">int</span>[m+<span class="number">1</span>][n+<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">        List&lt;Integer&gt; results = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++) &#123;</span><br><span class="line">                pre[i][j] = pre[i - <span class="number">1</span>][j] ^ pre[i][j - <span class="number">1</span>] ^ pre[i - <span class="number">1</span>][j - <span class="number">1</span>] ^ matrix[i - <span class="number">1</span>][j - <span class="number">1</span>];</span><br><span class="line">                results.add(pre[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 这个地方应该用更加优化的方式</span></span><br><span class="line">        Collections.sort(results, <span class="keyword">new</span> Comparator&lt;Integer&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Integer num1, Integer num2)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> num2 - num1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> results.get(k - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h2><p><strong>还是要先理解题意</strong></p>
-<pre><code>矩阵中坐标 (a, b) 的 值 可由对所有满足 0 &lt;= i &lt;= a &lt; m 且 0 &lt;= j &lt;= b &lt; n 的元素 matrix[i][j]（下标从 0 开始计数）执行异或运算得到。
+<pre><code>矩阵中坐标 (a, b) 的 值 可由对所有满足 0 &lt;= i &lt;= a &lt; m 且 0 &lt;= j &lt;= b &lt; n 的元素
+matrix[i][j]（下标从 0 开始计数）执行异或运算得到。
 </code></pre><p>上面关键这句，理解起来略有点抽象，其实说白了，也就是说现在我们有另外一个矩阵 pre，则 pre[a][b] 的值就等于 matrix 这个矩阵中，由 matrix[0][0] … ^ matrix[a][b] 的结果</p>
-<p><img src="/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k.png" alt="alt"></p>
+<p><img src="xor_max_k.png" alt="alt"></p>
 <p>比如说如上图，其中 pre[1][1] = matrix[0][0] ^ matrix[0][1] ^ matrix[1][0] ^ matrix[1][1]，也就是等于 matrix 中的小矩阵(i=0~a, j=0~b)中全部元素的异或结果。</p>
 <p><strong>那 pre[i][j] = pre[i - 1][j] ^ pre[i][j - 1] ^ pre[i - 1][j - 1] ^ matrix[i - 1][j - 1]; 是怎么解释？</strong></p>
 <p>如图：</p>
-<p><img src="/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k_2.png" alt="alt"></p>
+<p><img src="xor_max_k_2.png" alt="alt"></p>
 <p>当我们要求 pre[a, b] 时，可以看到，它的结果是 matrix 中全部元素的异或</p>
 <p>在二维前缀和的计算过程中，如果我们正在计算首行或者首列，即 i=0 或 j=0，此时例如 pre(i−1,j−1) 是一个超出下标范围的结果。因此我们可以使用一个 (m+1)×(n+1) 的二维矩阵，将首行和首列空出来赋予默认值 0，并使用接下来的 m 行和 n 列存储二维前缀和，这样就不必进行下标范围的判断了。</p>
 <p>也就是说我们实际求得的 pre 数组是这个样子的：</p>
-<p><img src="/2021/05/20/1738-找出第K大的异或坐标值/xor_max_k_3.png" alt="alt"></p>
+<p><img src="xor_max_k_3.png" alt="alt"></p>
 <p>关键来了，pre[a-1, b-1] ^ pre[a-1, b] ^ pre[a, b-1]，可以看到中间公式部分重复出现了3次，由于异或的特性：</p>
 <pre><code>a ^ a ^ a = 0 ^ a
           = a
 
-所以 pre[a-1, b-1] ^ pre[a-1, b] ^ pre[a, b-1] 就相当于是除了 matrix[a, b] 之外，其它坐标的值的异或了。再异或上 matrix[a, b]，即为需要求得的 pre[a, b] 的值。
+所以 pre[a-1, b-1] ^ pre[a-1, b] ^ pre[a, b-1] 就相当于是除了 matrix[a, b] 之外，
+其它坐标的值的异或了。再异或上 matrix[a, b]，即为需要求得的 pre[a, b] 的值。
 </code></pre><p>对这个题目来说，最关键的就是上面部分。其次还有一个重点，就是求第 k 大的值。这又是另外一个题目的解法，需要扩展一下。</p>
 <p><a href="https://leetcode-cn.com/problems/kth-largest-element-in-an-array/" target="_blank" rel="noopener">215. 数组中的第K个最大元素</a></p>
 
@@ -328,7 +330,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
