@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"rodzhang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="SharedPreferences 是 Android 内置的轻量级存储方案，相信做 Android 开发的同学，没有一个没和它打过交道的。简单的说它是通过xml文件，以 key-value 的形式来存储应用中的相关数据，通常是一个配置，实验开关等等。这里我主要是想通过源码的形式，了解它的内部机制，同时分析它存在的问题。 源码版本：Android API 28">
+<meta name="keywords" content="Android,存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="那些年用过的sp">
+<meta property="og:url" content="https://rodzhang.github.io/2021/05/24/那些年用过的sp/index.html">
+<meta property="og:site_name" content="Lost Little Attic">
+<meta property="og:description" content="SharedPreferences 是 Android 内置的轻量级存储方案，相信做 Android 开发的同学，没有一个没和它打过交道的。简单的说它是通过xml文件，以 key-value 的形式来存储应用中的相关数据，通常是一个配置，实验开关等等。这里我主要是想通过源码的形式，了解它的内部机制，同时分析它存在的问题。 源码版本：Android API 28">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-23T17:53:18.265Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="那些年用过的sp">
+<meta name="twitter:description" content="SharedPreferences 是 Android 内置的轻量级存储方案，相信做 Android 开发的同学，没有一个没和它打过交道的。简单的说它是通过xml文件，以 key-value 的形式来存储应用中的相关数据，通常是一个配置，实验开关等等。这里我主要是想通过源码的形式，了解它的内部机制，同时分析它存在的问题。 源码版本：Android API 28">
+
+<link rel="canonical" href="https://rodzhang.github.io/2021/05/24/那些年用过的sp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>那些年用过的sp | Lost Little Attic</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Lost Little Attic</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://rodzhang.github.io/2021/05/24/那些年用过的sp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rod Zhang">
+      <meta itemprop="description" content="纸上得来终觉浅，绝知此事要躬行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lost Little Attic">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          那些年用过的sp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-05-24 00:08:29 / Modified: 01:53:18" itemprop="dateCreated datePublished" datetime="2021-05-24T00:08:29+08:00">2021-05-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>SharedPreferences 是 Android 内置的轻量级存储方案，相信做 Android 开发的同学，没有一个没和它打过交道的。简单的说它是通过xml文件，以 key-value 的形式来存储应用中的相关数据，通常是一个配置，实验开关等等。这里我主要是想通过源码的形式，了解它的内部机制，同时分析它存在的问题。</p>
+<p>源码版本：Android API 28</p>
+<a id="more"></a>
+<h2 id="操作-sp-的大体流程"><a href="#操作-sp-的大体流程" class="headerlink" title="操作 sp 的大体流程"></a>操作 sp 的大体流程</h2><h3 id="读"><a href="#读" class="headerlink" title="读"></a>读</h3><ol>
+<li>获取 sp 对象</li>
+<li>通过 sp 对象的一系列 get 方法读取值</li>
+</ol>
+<h3 id="写"><a href="#写" class="headerlink" title="写"></a>写</h3><ol>
+<li>获取 sp 对象</li>
+<li>获取 editor 对象</li>
+<li>通过一系列的 editor.putXXX 操作写入新值</li>
+<li>最后通过 commit/apply 让写入生效</li>
+</ol>
+<h2 id="获取-sp-对象"><a href="#获取-sp-对象" class="headerlink" title="获取 sp 对象"></a>获取 sp 对象</h2><p>获取 sp 对象的方式我知道的 3 种，分别是：</p>
+<h3 id="Activity-getPreferences"><a href="#Activity-getPreferences" class="headerlink" title="Activity.getPreferences"></a>Activity.getPreferences</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Activity.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SharedPreferences <span class="title">getPreferences</span><span class="params">(@Context.PreferencesMode <span class="keyword">int</span> mode)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// getSharedPreferences 是 Context.java 中的方法</span></span><br><span class="line">    <span class="keyword">return</span> getSharedPreferences(getLocalClassName(), mode);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Returns class name for this activity with the package prefix removed.</span></span><br><span class="line"><span class="comment">  * This is the default name used to read and write settings.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> The local class name.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="meta">@NonNull</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getLocalClassName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> String pkg = getPackageName();</span><br><span class="line">    <span class="keyword">final</span> String cls = mComponent.getClassName();</span><br><span class="line">    <span class="keyword">int</span> packageLen = pkg.length();</span><br><span class="line">    <span class="keyword">if</span> (!cls.startsWith(pkg) || cls.length() &lt;= packageLen</span><br><span class="line">            || cls.charAt(packageLen) != <span class="string">'.'</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> cls;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cls.substring(packageLen+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过源码可以看到，通过上面的方式，最终是通过 Context.getSharedPreferences() 方法获取的 sp 对象，使用它的意义在于，它是以调用它的 Activity 类名为文件名，我们可以通过这种方式，方便的把与这个 Activity 相关的配置放在一个独立的 sp 文件中。</p>
+<p>但是在开发中我从来没有用过这种方式，也没有遇到过别人用，毕竟有时候我们重构的时候可能会修改 Activity 的类名。感觉这就是一个方便使用，而不方便维护的使用方式。</p>
+<h3 id="通过-PreferenceManager"><a href="#通过-PreferenceManager" class="headerlink" title="通过 PreferenceManager"></a>通过 PreferenceManager</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SharedPreferences <span class="title">getDefaultSharedPreferences</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> context.getSharedPreferences(getDefaultSharedPreferencesName(context),</span><br><span class="line">            getDefaultSharedPreferencesMode());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getDefaultSharedPreferencesName</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> context.getPackageName() + <span class="string">"_preferences"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDefaultSharedPreferencesMode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Context.MODE_PRIVATE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过源码可以清楚的看到，实际上还是使用 Context.getSharedPreferences()，默认的文件名是 “包名_preferences”。可以用来存储应用级别的配置，这个比 Activity 那个要实用一些，毕竟一个应用的包名基本上是确定后就不会再改的。虽然我也没有遇到过使用这种方式的。</p>
+<p>上面两种方式的使用并不多，就当一个简单的扩展吧。当遇到需要使用 Activity 级别，或者名级别的 sp 应用场景时，如果知道已经有现成的实现，不用我们再自己去写，其实也挺好的。</p>
+<h3 id="最关键的-Context-getSharedPreferences"><a href="#最关键的-Context-getSharedPreferences" class="headerlink" title="最关键的 Context.getSharedPreferences()"></a>最关键的 Context.getSharedPreferences()</h3><p>基本都知道 Context 是一个抽象类，其实现是在 ContextImpl.java 中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实例成员变量</span></span><br><span class="line"><span class="keyword">private</span> ArrayMap&lt;String, File&gt; mSharedPrefsPaths;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类成员变量</span></span><br><span class="line"><span class="comment">// 说明这里保存的缓存基本是全局共享的</span></span><br><span class="line"><span class="meta">@GuardedBy</span>(<span class="string">"ContextImpl.class"</span>)</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> ArrayMap&lt;String, ArrayMap&lt;File, SharedPreferencesImpl&gt;&gt; sSharedPrefsCache;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SharedPreferences <span class="title">getSharedPreferences</span><span class="params">(String name, <span class="keyword">int</span> mode)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    File file;</span><br><span class="line">    <span class="comment">// 喏，这里有同步，且锁是 ContextImpl.class 对象</span></span><br><span class="line">    <span class="keyword">synchronized</span> (ContextImpl.class) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mSharedPrefsPaths == <span class="keyword">null</span>) &#123;</span><br><span class="line">            mSharedPrefsPaths = <span class="keyword">new</span> ArrayMap&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 常规的缓存操作</span></span><br><span class="line">        file = mSharedPrefsPaths.get(name);</span><br><span class="line">        <span class="keyword">if</span> (file == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 没有命中文件缓存，则新建文件，并加入到缓存中</span></span><br><span class="line">            <span class="comment">// mSharedPrefsPaths 是一个实例成员变量，也就是说该缓存</span></span><br><span class="line">            <span class="comment">// 只在这个对象生命周期内有效</span></span><br><span class="line">            <span class="comment">// 最终获取的是 /data/data/package_name/shared_prefs/name.xml 文件</span></span><br><span class="line">            <span class="comment">// 不存在即新建，常规操作</span></span><br><span class="line">            file = getSharedPreferencesPath(name);</span><br><span class="line">            mSharedPrefsPaths.put(name, file);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> getSharedPreferences(file, mode);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SharedPreferences <span class="title">getSharedPreferences</span><span class="params">(File file, <span class="keyword">int</span> mode)</span> </span>&#123;</span><br><span class="line">    SharedPreferencesImpl sp;</span><br><span class="line">    <span class="keyword">synchronized</span> (ContextImpl.class) &#123;</span><br><span class="line">        <span class="keyword">final</span> ArrayMap&lt;File, SharedPreferencesImpl&gt; cache = getSharedPreferencesCacheLocked();</span><br><span class="line">        sp = cache.get(file);</span><br><span class="line">        <span class="keyword">if</span> (sp == <span class="keyword">null</span>) &#123;</span><br><span class="line">            checkMode(mode);</span><br><span class="line">            <span class="keyword">if</span> (getApplicationInfo().targetSdkVersion &gt;= android.os.Build.VERSION_CODES.O) &#123;</span><br><span class="line">                <span class="keyword">if</span> (isCredentialProtectedStorage()</span><br><span class="line">                        &amp;&amp; !getSystemService(UserManager.class)</span><br><span class="line">                                .isUserUnlockingOrUnlocked(UserHandle.myUserId())) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"SharedPreferences in credential encrypted "</span></span><br><span class="line">                            + <span class="string">"storage are not available until after user is unlocked"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            sp = <span class="keyword">new</span> SharedPreferencesImpl(file, mode);</span><br><span class="line">            cache.put(file, sp);</span><br><span class="line">            <span class="keyword">return</span> sp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((mode &amp; Context.MODE_MULTI_PROCESS) != <span class="number">0</span> ||</span><br><span class="line">        getApplicationInfo().targetSdkVersion &lt; android.os.Build.VERSION_CODES.HONEYCOMB) &#123;</span><br><span class="line">        <span class="comment">// If somebody else (some other process) changed the prefs</span></span><br><span class="line">        <span class="comment">// file behind our back, we reload it.  This has been the</span></span><br><span class="line">        <span class="comment">// historical (if undocumented) behavior.</span></span><br><span class="line">        sp.startReloadIfChangedUnexpectedly();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GuardedBy</span>(<span class="string">"ContextImpl.class"</span>)</span><br><span class="line"><span class="function"><span class="keyword">private</span> ArrayMap&lt;File, SharedPreferencesImpl&gt; <span class="title">getSharedPreferencesCacheLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sSharedPrefsCache == <span class="keyword">null</span>) &#123;</span><br><span class="line">        sSharedPrefsCache = <span class="keyword">new</span> ArrayMap&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> String packageName = getPackageName();</span><br><span class="line">    ArrayMap&lt;File, SharedPreferencesImpl&gt; packagePrefs = sSharedPrefsCache.get(packageName);</span><br><span class="line">    <span class="keyword">if</span> (packagePrefs == <span class="keyword">null</span>) &#123;</span><br><span class="line">        packagePrefs = <span class="keyword">new</span> ArrayMap&lt;&gt;();</span><br><span class="line">        sSharedPrefsCache.put(packageName, packagePrefs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> packagePrefs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/存储/" rel="tag"># 存储</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/20/692-前K个高频单词/" rel="prev" title="692.前K个高频单词">
+      <i class="fa fa-chevron-left"></i> 692.前K个高频单词
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/26/1190-反转每对括号间的子串/" rel="next" title="1190.反转每对括号间的子串">
+      1190.反转每对括号间的子串 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-sp-的大体流程"><span class="nav-number">1.</span> <span class="nav-text">操作 sp 的大体流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读"><span class="nav-number">1.1.</span> <span class="nav-text">读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写"><span class="nav-number">1.2.</span> <span class="nav-text">写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取-sp-对象"><span class="nav-number">2.</span> <span class="nav-text">获取 sp 对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Activity-getPreferences"><span class="nav-number">2.1.</span> <span class="nav-text">Activity.getPreferences</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过-PreferenceManager"><span class="nav-number">2.2.</span> <span class="nav-text">通过 PreferenceManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最关键的-Context-getSharedPreferences"><span class="nav-number">2.3.</span> <span class="nav-text">最关键的 Context.getSharedPreferences()</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rod Zhang</p>
+  <div class="site-description" itemprop="description">纸上得来终觉浅，绝知此事要躬行</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rod Zhang</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
